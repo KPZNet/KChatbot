@@ -22,6 +22,21 @@ import contractions
 # import pycontractions # Alternative better package for removing contractions
 from autocorrect import Speller
 
+start = time.time()
+
+#answers
+#Id,OwnerUserId,CreationDate,ParentId,Score,Body
+
+
+spell = Speller()
+token = ToktokTokenizer()
+lemmatizer = WordNetLemmatizer()
+stemmer = PorterStemmer()
+charac = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~0123456789'
+stop_words = set(stopwords.words("english"))
+adjective_tag_list = set(['JJ','JJR', 'JJS', 'RBR', 'RBS']) # List of Adjective's tag from nltk package
+
+
 def clean_text(text):
     text = re.sub(r"\'", "'", text) # match all literal apostrophe pattern then replace them by a single whitespace
     text = re.sub(r"\n", " ", text) # match all literal Line Feed (New line) pattern then replace them by a single whitespace
@@ -93,33 +108,25 @@ def remove_by_tag(text, undesired_tag):
 
     return ' '.join(map(str, filtered)) # Return the text untokenize
 
-dtypes_questions = {'Id':'int32', 'CreationDate':'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
 
-spell = Speller()
-token = ToktokTokenizer()
-lemmatizer = WordNetLemmatizer()
-stemmer = PorterStemmer()
-charac = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~0123456789'
-stop_words = set(stopwords.words("english"))
-adjective_tag_list = set(['JJ','JJR', 'JJS', 'RBR', 'RBS']) # List of Adjective's tag from nltk package
+def readinquestions():
+    global df_questions
+    dtypes_questions = {'Id': 'int32', 'CreationDate': 'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
+    df_questions = pd.read_csv('pythonpack/questions.csv',
+                               usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
+                               encoding="ISO-8859-1",
+                               dtype=dtypes_questions,
+                               nrows=100
+                               )
+    df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(
+        lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
+    df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
+    df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2000-01-01')]
+    #df_questions = df_questions[df_questions["Score"] >= 0]
+    df_questions = df_questions[:2000]
+    df_questions.info()
+    return df_questions
 
-start = time.time()
-df_questions = pd.read_csv('pythonpack/questions.csv',
-                           usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
-                           encoding = "ISO-8859-1",
-                           dtype=dtypes_questions,
-                           nrows=100
-                           )
-df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
-
-df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
-df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2000-01-01')]
-df_questions = df_questions[:2000]
-
-df_questions.info()
-
-# Remove all questions that have a negative score
-#df_questions = df_questions[df_questions["Score"] >= 0]
 
 def scrub_text_loop(df):
     t = []
@@ -156,6 +163,7 @@ def scrub_text_loop(df):
 
     return b, t
 
+df_questions = readinquestions()
 b, t = scrub_text_loop(df_questions)
 df_questions['Body'] = b
 df_questions['Title'] = t
