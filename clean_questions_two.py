@@ -124,6 +124,35 @@ df_questions.info()
 # Remove all questions that have a negative score
 #df_questions = df_questions[df_questions["Score"] >= 0]
 
+def scrub_text_loop(df):
+    t = []
+    b = []
+    for r in df:
+        x = r['Title']
+        x= BeautifulSoup(x, 'html.parser').get_text()
+        x= clean_text(x)
+        x= expand_contractions(x)
+        x.lower()
+        x= remove_non_alphabetical_character(x)
+        x= remove_single_letter(x)
+        x= remove_stopwords(x)
+        x= remove_by_tag(x, adjective_tag_list)
+        x= lemmatize_text(x)
+        t.append(x)
+
+        x = r['Body']
+        x= BeautifulSoup(x, 'html.parser').get_text()
+        x= clean_text(x)
+        x= expand_contractions(x)
+        x.lower()
+        x= remove_non_alphabetical_character(x)
+        x= remove_single_letter(x)
+        x= remove_stopwords(x)
+        x= remove_by_tag(x, adjective_tag_list)
+        x= lemmatize_text(x)
+        b.append(x)
+
+    return b, t
 
 def scrub_text(x):
     x= BeautifulSoup(x, 'html.parser').get_text()
@@ -136,6 +165,9 @@ def scrub_text(x):
     x= remove_by_tag(x, adjective_tag_list)
     x= lemmatize_text(x)
     return x
+
+
+
 
 def scrub_text_by_parts():
     # Parse question and title then return only the text
@@ -163,7 +195,10 @@ def scrub_text_by_parts():
 #df_questions['Body'] = df_questions['Body'].apply(lambda x: scrub_text(x))
 #df_questions['Title'] = df_questions['Title'].apply(lambda x: scrub_text(x))
 
-scrub_text_by_parts()
+#scrub_text_by_parts()
+b, t = scrub_text_loop(df_questions)
+df_questions['Body'] = b
+df_questions['Title'] = t
 
 df_questions['Text'] = df_questions['Title'] + ' ' + df_questions['Body']
 df_questions.to_csv('df_questions_fullclean2.csv', encoding='utf-8', errors='surrogatepass')
