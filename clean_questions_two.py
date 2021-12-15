@@ -31,38 +31,33 @@ def clean_text(text):
     return text
 
 def expand_contractions(text):
-    """expand shortened words, e.g. 'don't' to 'do not'"""
     text = contractions.fix(text)
     return text
 
 def autocorrect(text):
     words = token.tokenize(text)
     words_correct = [spell(w) for w in words]
-    return ' '.join(map(str, words_correct)) # Return the text untokenize
+    return ' '.join(map(str, words_correct))
 
 def remove_punctuation_and_number(text):
-    """remove all punctuation and number"""
     return text.translate(str.maketrans(" ", " ", charac))
 
 def remove_non_alphabetical_character(text):
-    """remove all non-alphabetical character"""
-    text = re.sub("[^a-z]+", " ", text) # remove all non-alphabetical character
+    text = re.sub("[^a-z]+", " ", text) # remove non-alphabetical character
     text = re.sub("\s+", " ", text) # remove whitespaces left after the last operation
     return text
 
 def remove_single_letter(text):
-    """remove single alphabetical character"""
     text = re.sub(r"\b\w{1}\b", "", text) # remove all single letter
     text = re.sub("\s+", " ", text) # remove whitespaces left after the last operation
     text = text.strip(" ")
     return text
 
 def remove_stopwords(text):
-    """remove common words in english by using nltk.corpus's list"""
     words = token.tokenize(text)
     filtered = [w for w in words if not w in stop_words]
 
-    return ' '.join(map(str, filtered)) # Return the text untokenize
+    return ' '.join(map(str, filtered))
 
 def stem_text(text):
     """Stem the text"""
@@ -135,7 +130,7 @@ def scrub_text_loop(df):
         if index % 10 == 0:
             print("Processing Row {0} / {1} Time {2:.4f}".format(index,l, time.time()-start))
 
-        x = df['Title'].iloc[index]
+        x = h = df['Title'].iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
         x= expand_contractions(x)
@@ -147,7 +142,7 @@ def scrub_text_loop(df):
         x= lemmatize_text(x)
         t.append(x)
 
-        x = df['Body'].iloc[index]
+        x = h = df['Body'].iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
         x= expand_contractions(x)
