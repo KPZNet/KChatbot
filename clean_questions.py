@@ -29,10 +29,10 @@ df_questions = pd.read_csv('pythonpack/questions.csv',
                            usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
                            encoding = "ISO-8859-1",
                            dtype=dtypes_questions,
-                           nrows=1000000
+                           nrows=100
                            )
 df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
-df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2016-01-01')]
+df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2000-01-01')]
 df_questions = df_questions[:2000]
 
 df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))

@@ -98,7 +98,6 @@ def remove_by_tag(text, undesired_tag):
 
     return ' '.join(map(str, filtered)) # Return the text untokenize
 
-
 dtypes_questions = {'Id':'int32', 'CreationDate':'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
 
 spell = Speller()
@@ -114,14 +113,13 @@ df_questions = pd.read_csv('pythonpack/questions.csv',
                            usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
                            encoding = "ISO-8859-1",
                            dtype=dtypes_questions,
-                           nrows=1000000
+                           nrows=100
                            )
-df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
-df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2016-01-01')]
-df_questions = df_questions[:2000]
-
-
 df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
+
+df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
+df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2000-01-01')]
+df_questions = df_questions[:2000]
 
 df_questions.info()
 
@@ -131,14 +129,19 @@ df_questions.info()
 def scrub_text_loop(df):
     t = []
     b = []
+    l = len(df)
     for index in range(len(df)):
+
+        if index % 10 == 0:
+            print("Processing Row {0} / {1} Time {2:.4f}".format(index,l, time.time()-start))
+
         x = df['Title'].iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
         x= expand_contractions(x)
-        x.lower()
+        x = x.lower()
         x= remove_non_alphabetical_character(x)
-        x= remove_single_letter(x)
+        #x= remove_single_letter(x)
         x= remove_stopwords(x)
         x= remove_by_tag(x, adjective_tag_list)
         x= lemmatize_text(x)
@@ -148,9 +151,9 @@ def scrub_text_loop(df):
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
         x= expand_contractions(x)
-        x.lower()
+        x = x.lower()
         x= remove_non_alphabetical_character(x)
-        x= remove_single_letter(x)
+        #x= remove_single_letter(x)
         x= remove_stopwords(x)
         x= remove_by_tag(x, adjective_tag_list)
         x= lemmatize_text(x)
@@ -158,71 +161,15 @@ def scrub_text_loop(df):
 
     return b, t
 
-def scrub_text(x):
-    x= BeautifulSoup(x, 'html.parser').get_text()
-    x= clean_text(x)
-    x= expand_contractions(x)
-    x.lower()
-    x= remove_non_alphabetical_character(x)
-    x= remove_single_letter(x)
-    x= remove_stopwords(x)
-    x= remove_by_tag(x, adjective_tag_list)
-    x= lemmatize_text(x)
-    return x
-
-def scrub_text_by_parts():
-    # Parse question and title then return only the text
-    print("HTML Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: BeautifulSoup(x, 'html.parser').get_text())
-    print("HTML Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: BeautifulSoup(x, 'html.parser').get_text())
-    print("Clean Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: clean_text(x))
-    print("Clean Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: clean_text(x))
-    print("Contract Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: expand_contractions(x))
-    print("Contract Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: expand_contractions(x))
-    print("Lower Title")
-    df_questions['Title'] = df_questions['Title'].str.lower()
-    print("Lower Body")
-    df_questions['Body'] = df_questions['Body'].str.lower()
-    print("Alpha Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_non_alphabetical_character(x))
-    print("Alpha Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_non_alphabetical_character(x))
-    print("Single Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_single_letter(x))
-    print("Single Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_single_letter(x))
-    print("Stop Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_stopwords(x))
-    print("Stop Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_stopwords(x))
-    print("Adj Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_by_tag(x, adjective_tag_list))
-    print("Adj Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_by_tag(x, adjective_tag_list))
-    print("Lemm Title")
-    df_questions['Title'] = df_questions['Title'].apply(lambda x: lemmatize_text(x))
-    print("Lemm Body")
-    df_questions['Body'] = df_questions['Body'].apply(lambda x: lemmatize_text(x))
-
-
-#df_questions['Body'] = df_questions['Body'].apply(lambda x: scrub_text(x))
-#df_questions['Title'] = df_questions['Title'].apply(lambda x: scrub_text(x))
-
-#scrub_text_by_parts()
-
 b, t = scrub_text_loop(df_questions)
 df_questions['Body'] = b
 df_questions['Title'] = t
 
+fileName = 'df_questions_scrubbed.csv'
 df_questions['Text'] = df_questions['Title'] + ' ' + df_questions['Body']
-df_questions.to_csv('df_questions_fullclean2.csv', encoding='utf-8', errors='surrogatepass')
+df_questions.to_csv(fileName, encoding='utf-8', errors='surrogatepass')
 
 end = time.time()
 
-print("The time of execution of above program is :", end-start)
-print("COMPLETE")
+print("Execution Time {0:.4f} seconds".format(end-start))
+print("COMPLETE scrubbing {0}".format(fileName))
