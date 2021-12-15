@@ -10,15 +10,9 @@ from sklearn.preprocessing import LabelEncoder
 import pickle
 
 
-def vectorize_sentence(stnc):
-
+def get_words():
     words = open("cc.en.300.vec","r").read().splitlines()
-
-    _words = dict()
-    for w in words[1]:
-        w = w.split()
-        word = w.pop(0)
-        _words[word] = list(map(float, w))
+    return words
 
 
 def make_sentence_vector(tokens, words):
@@ -31,24 +25,7 @@ def make_sentence_vector(tokens, words):
     sentence_matrix = np.array(sentence_matrix)
     return np.average(sentence_matrix,axis=0)
 
-sentence = "Hello my name"
-tokens = sentence.split()
-tokens
 
-vector = make_sentence_vector(tokens, words)
-vector.shape
-
-def tell_me_how_similar(s1, s2, words):
-    v1 = make_sentence_vector(s1, words)
-    v2 = make_sentence_vector(s2, words)
-    return cosine(v1,v2)
-
-sentence = "Hello my name is bob"
-tokens1 = sentence.split()
-sentence = "Hello my name is joe"
-tokens2 = sentence.split()
-
-tell_me_how_similar(tokens1,tokens2,words)
 
 
 
@@ -114,7 +91,8 @@ def __save_model_to_file(model):
     return model.save("chat_model")
 
 def build():
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents.json')
+    #words = get_words()
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
     epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)

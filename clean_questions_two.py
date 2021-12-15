@@ -1,10 +1,8 @@
-# generic librairies
 import time as time
 import numpy as np
 import pandas as pd
 import gc
 
-# Text librairies
 import re
 from bs4 import BeautifulSoup
 import nltk
@@ -23,9 +21,6 @@ import contractions
 from autocorrect import Speller
 
 start = time.time()
-
-#answers
-#Id,OwnerUserId,CreationDate,ParentId,Score,Body
 
 
 spell = Speller()
@@ -108,87 +103,68 @@ def remove_by_tag(text, undesired_tag):
 
     return ' '.join(map(str, filtered)) # Return the text untokenize
 
-
-def readinquestions():
+def readinquestions(rows_to_read, date_cut):
     dtypes_questions = {'Id': 'int32', 'CreationDate': 'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
     df = pd.read_csv('pythonpack/questions.csv',
                                usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
                                encoding="ISO-8859-1",
                                dtype=dtypes_questions,
-                               nrows=100
+                               nrows=rows_to_read
                                )
     df[['Title', 'Body']] = df[['Title', 'Body']].applymap(
         lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
     df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
-    df = df.loc[(df['CreationDate'] >= '2000-01-01')]
+    df = df.loc[(df['CreationDate'] >= date_cut)]
     #df_questions = df_questions[df_questions["Score"] >= 0]
-    df = df[:2000]
+    #df = df[:2000]
     df.info()
     return df
-#answers
-#Id,OwnerUserId,CreationDate,ParentId,Score,Body
-def readinanswers():
+
+def readinanswers(rows_to_read, date_cut):
     dtypes_answers = {'Id':'int32', 'CreationDate': 'str', 'ParentId':'int32','Score': 'int16', 'Body': 'str'}
     df = pd.read_csv('pythonpack/answers.csv',
                                usecols=['Id','CreationDate','ParentId','Score', 'Body'],
                                encoding = "ISO-8859-1",
                                dtype=dtypes_answers,
-                               nrows=100
+                               nrows=rows_to_read
                                )
     df[['Body']] = df[['Body']].applymap(
         lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
     df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
-    df = df.loc[(df['CreationDate'] >= '2000-01-01')]
+    df = df.loc[(df['CreationDate'] >= date_cut)]
     #df_questions = df_questions[df_questions["Score"] >= 0]
-    df = df[:2000]
+    #df = df[:2000]
     df.info()
     return df
 
-def scrub_text_loop(df):
+
+def scrub_text_loop_answers(filename, df):
     t = []
-    b = []
     l = len(df)
+    t_percent = int(l/100)
     for index in range(len(df)):
 
-        if index % 10 == 0:
-            print("Processing Row {0} / {1} Time {2:.4f}".format(index,l, time.time()-start))
+        if index % t_percent == 0:
+            print("Processing Row {0} / {1} Time {2:.4f} - {3}".format(index,l, time.time()-start, filename))
 
-        x = h = df['Title'].iloc[index]
+        x = df.iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
-        x= expand_contractions(x)
-        x = x.lower()
-        x= remove_non_alphabetical_character(x)
-        #x= remove_single_letter(x)
-        x= remove_stopwords(x)
-        x= remove_by_tag(x, adjective_tag_list)
-        x= lemmatize_text(x)
+
         t.append(x)
 
-        x = h = df['Body'].iloc[index]
-        x= BeautifulSoup(x, 'html.parser').get_text()
-        x= clean_text(x)
-        x= expand_contractions(x)
-        x = x.lower()
-        x= remove_non_alphabetical_character(x)
-        #x= remove_single_letter(x)
-        x= remove_stopwords(x)
-        x= remove_by_tag(x, adjective_tag_list)
-        x= lemmatize_text(x)
-        b.append(x)
+    return t
 
-    return b, t
-
-
-def scrub_text_loop_2(df):
+def scrub_text_loop_2(filename, df):
     t = []
     l = len(df)
+    t_percent = int(l/100)
     for index in range(len(df)):
 
-        if index % 10 == 0:
-            print("Processing Row {0} / {1} Time {2:.4f}".format(index,l, time.time()-start))
+        if index % t_percent == 0:
+            print("Processing Row {0} / {1} Time {2:.4f} - {3}".format(index,l, time.time()-start, filename))
 
-        x = h = df.iloc[index]
+        x = df.iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
         x= clean_text(x)
         x= expand_contractions(x)
@@ -202,21 +178,16 @@ def scrub_text_loop_2(df):
 
     return t
 
-
 def get_scrubbed_questions(filename):
-    df = readinquestions()
-    b = scrub_text_loop_2(df['Body'])
-    t = scrub_text_loop_2(df['Title'])
-    df['Body'] = b
-    df['Title'] = t
-    df['Text'] = df['Title'] + ' ' + df['Body']
+    df = readinquestions(1000000,'2016-09-01')
+    df['Body_clean'] = scrub_text_loop_2(filename, df['Body'])
+    df['Title_clean'] = scrub_text_loop_2(filename, df['Title'])
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 def get_scrubbed_answers(filename):
-    df = readinanswers()
-    b = scrub_text_loop_2(df['Body'])
+    df = readinanswers(1000000,'2016-08-01')
+    b = scrub_text_loop_answers(filename, df['Body'])
     df['Body'] = b
-    df['Text'] = df['Body']
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 get_scrubbed_questions("clean_questions.csv")
