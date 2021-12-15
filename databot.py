@@ -12,7 +12,7 @@ import pickle
 
 import build_model
 
-build_model.build()
+#build_model.build()
 
 def build_data_dictionary(wdata):
     dit = {}

@@ -28,8 +28,6 @@ def make_sentence_vector(tokens, words):
 
 
 
-
-
 def __readin_intensions(tfile):
     with open(tfile) as file:
         data = json.load(file)
@@ -90,17 +88,6 @@ def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,
 def __save_model_to_file(model):
     return model.save("chat_model")
 
-def build():
-    #words = get_words()
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
-    lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
-    epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
-    __save_model_to_file(model)
-
-    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
-
-
 def pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences):
     # to save the fitted tokenizer
     with open('tokenizer.pickle', 'wb') as handle:
@@ -124,7 +111,6 @@ def pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, trai
     with open('labels.pickle', 'wb') as ecn_file:
         pickle.dump(labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
-
 def load_pickles():
     # load tokenizer object
     with open('tokenizer.pickle', 'rb') as handle:
@@ -142,3 +128,19 @@ def load_pickles():
     with open('labels.pickle', 'rb') as enc:
         labels = pickle.load(enc)
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
+
+def build():
+    #words = get_words()
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents.json')
+    lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
+    embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
+    epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
+    __save_model_to_file(model)
+
+    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
+
+
+if __name__ == "__main__":
+    print("Building Model")
+    build()
+    print("Built")

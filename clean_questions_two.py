@@ -138,7 +138,7 @@ def readinanswers(rows_to_read, date_cut):
     return df
 
 
-def scrub_text_loop_answers(filename, df):
+def scrub_text_loop_minimal(filename, df):
     t = []
     l = len(df)
     t_percent = int(l/100)
@@ -155,7 +155,7 @@ def scrub_text_loop_answers(filename, df):
 
     return t
 
-def scrub_text_loop_2(filename, df):
+def scrub_text_loop_all(filename, df):
     t = []
     l = len(df)
     t_percent = int(l/100)
@@ -180,13 +180,15 @@ def scrub_text_loop_2(filename, df):
 
 def get_scrubbed_questions(filename):
     df = readinquestions(1000000,'2016-09-01')
-    df['Body_clean'] = scrub_text_loop_2(filename, df['Body'])
-    df['Title_clean'] = scrub_text_loop_2(filename, df['Title'])
+    df['Body_clean'] = scrub_text_loop_all(filename, df['Body'])
+    df['Title_clean'] = scrub_text_loop_all(filename, df['Title'])
+    df['Body'] = scrub_text_loop_minimal(filename, df['Body'])
+    df['Title'] = scrub_text_loop_minimal(filename, df['Title'])
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 def get_scrubbed_answers(filename):
     df = readinanswers(1000000,'2016-08-01')
-    b = scrub_text_loop_answers(filename, df['Body'])
+    b = scrub_text_loop_minimal(filename, df['Body'])
     df['Body'] = b
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
