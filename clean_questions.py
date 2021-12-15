@@ -22,15 +22,18 @@ import contractions
 # import pycontractions # Alternative better package for removing contractions
 from autocorrect import Speller
 
-dtypes_questions = {'Id':'int32', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
+dtypes_questions = {'Id':'int32', 'CreationDate':'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
 
 start = time.time()
 df_questions = pd.read_csv('pythonpack/questions.csv',
-                           usecols=['Id', 'Score', 'Title', 'Body'],
+                           usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
                            encoding = "ISO-8859-1",
                            dtype=dtypes_questions,
-                           nrows=2000
+                           nrows=1000000
                            )
+df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
+df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2016-01-01')]
+df_questions = df_questions[:2000]
 
 df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
 
@@ -47,13 +50,13 @@ adjective_tag_list = set(['JJ','JJR', 'JJS', 'RBR', 'RBS']) # List of Adjective'
 
 df_questions.info()
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 # Parse question and title then return only the text
 df_questions['Body'] = df_questions['Body'].apply(lambda x: BeautifulSoup(x, 'html.parser').get_text())
 df_questions['Title'] = df_questions['Title'].apply(lambda x: BeautifulSoup(x, 'html.parser').get_text())
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def clean_text(text):
     text = re.sub(r"\'", "'", text) # match all literal apostrophe pattern then replace them by a single whitespace
@@ -67,7 +70,7 @@ def clean_text(text):
 df_questions['Title'] = df_questions['Title'].apply(lambda x: clean_text(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: clean_text(x))
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def expand_contractions(text):
     """expand shortened words, e.g. 'don't' to 'do not'"""
@@ -79,7 +82,7 @@ df_questions['Title'] = df_questions['Title'].apply(lambda x: expand_contraction
 df_questions['Body'] = df_questions['Body'].apply(lambda x: expand_contractions(x))
 
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 
 def autocorrect(text):
@@ -90,7 +93,7 @@ def autocorrect(text):
 df_questions['Title'] = df_questions['Title'].str.lower()
 df_questions['Body'] = df_questions['Body'].str.lower()
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def remove_punctuation_and_number(text):
     """remove all punctuation and number"""
@@ -108,7 +111,7 @@ def remove_non_alphabetical_character(text):
 df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_non_alphabetical_character(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_non_alphabetical_character(x))
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def remove_single_letter(text):
     """remove single alphabetical character"""
@@ -120,7 +123,7 @@ def remove_single_letter(text):
 df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_single_letter(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_single_letter(x))
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def remove_stopwords(text):
     """remove common words in english by using nltk.corpus's list"""
@@ -133,7 +136,7 @@ def remove_stopwords(text):
 df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_stopwords(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_stopwords(x))
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 def remove_by_tag(text, undesired_tag):
     """remove all words by using ntk tag (adjectives, verbs, etc.)"""
@@ -147,7 +150,7 @@ df_questions['Title'] = df_questions['Title'].apply(lambda x: remove_by_tag(x, a
 df_questions['Body'] = df_questions['Body'].apply(lambda x: remove_by_tag(x, adjective_tag_list))
 
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 
 words = ["program", "programs", "programer", "programing", "programers"]
@@ -192,7 +195,7 @@ def lemmatize_text(text):
 df_questions['Title'] = df_questions['Title'].apply(lambda x: lemmatize_text(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: lemmatize_text(x))
 
-df_questions['Body'][11]
+#df_questions['Body'][11]
 
 df_questions['Text'] = df_questions['Title'] + ' ' + df_questions['Body']
 
