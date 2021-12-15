@@ -110,23 +110,39 @@ def remove_by_tag(text, undesired_tag):
 
 
 def readinquestions():
-    global df_questions
     dtypes_questions = {'Id': 'int32', 'CreationDate': 'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
-    df_questions = pd.read_csv('pythonpack/questions.csv',
+    df = pd.read_csv('pythonpack/questions.csv',
                                usecols=['Id', 'CreationDate', 'Score', 'Title', 'Body'],
                                encoding="ISO-8859-1",
                                dtype=dtypes_questions,
                                nrows=100
                                )
-    df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(
+    df[['Title', 'Body']] = df[['Title', 'Body']].applymap(
         lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
-    df_questions['CreationDate'] = pd.to_datetime(df_questions['CreationDate'], format='%Y-%m-%d')
-    df_questions = df_questions.loc[(df_questions['CreationDate'] >= '2000-01-01')]
+    df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
+    df = df.loc[(df['CreationDate'] >= '2000-01-01')]
     #df_questions = df_questions[df_questions["Score"] >= 0]
-    df_questions = df_questions[:2000]
-    df_questions.info()
-    return df_questions
-
+    df = df[:2000]
+    df.info()
+    return df
+#answers
+#Id,OwnerUserId,CreationDate,ParentId,Score,Body
+def readinanswers():
+    dtypes_answers = {'Id':'int32', 'CreationDate': 'str', 'ParentId':'int32','Score': 'int16', 'Body': 'str'}
+    df = pd.read_csv('pythonpack/answers.csv',
+                               usecols=['Id','CreationDate','ParentId','Score', 'Body'],
+                               encoding = "ISO-8859-1",
+                               dtype=dtypes_answers,
+                               nrows=100
+                               )
+    df[['Body']] = df[['Body']].applymap(
+        lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
+    df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
+    df = df.loc[(df['CreationDate'] >= '2000-01-01')]
+    #df_questions = df_questions[df_questions["Score"] >= 0]
+    df = df[:2000]
+    df.info()
+    return df
 
 def scrub_text_loop(df):
     t = []
@@ -163,16 +179,50 @@ def scrub_text_loop(df):
 
     return b, t
 
-df_questions = readinquestions()
-b, t = scrub_text_loop(df_questions)
-df_questions['Body'] = b
-df_questions['Title'] = t
 
-fileName = 'df_questions_scrubbed.csv'
-df_questions['Text'] = df_questions['Title'] + ' ' + df_questions['Body']
-df_questions.to_csv(fileName, encoding='utf-8', errors='surrogatepass')
+def scrub_text_loop_2(df):
+    t = []
+    l = len(df)
+    for index in range(len(df)):
+
+        if index % 10 == 0:
+            print("Processing Row {0} / {1} Time {2:.4f}".format(index,l, time.time()-start))
+
+        x = h = df.iloc[index]
+        x= BeautifulSoup(x, 'html.parser').get_text()
+        x= clean_text(x)
+        x= expand_contractions(x)
+        x = x.lower()
+        x= remove_non_alphabetical_character(x)
+        #x= remove_single_letter(x)
+        x= remove_stopwords(x)
+        x= remove_by_tag(x, adjective_tag_list)
+        x= lemmatize_text(x)
+        t.append(x)
+
+    return t
+
+
+def get_scrubbed_questions(filename):
+    df = readinquestions()
+    b = scrub_text_loop_2(df['Body'])
+    t = scrub_text_loop_2(df['Title'])
+    df['Body'] = b
+    df['Title'] = t
+    df['Text'] = df['Title'] + ' ' + df['Body']
+    df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
+
+def get_scrubbed_answers(filename):
+    df = readinanswers()
+    b = scrub_text_loop_2(df['Body'])
+    df['Body'] = b
+    df['Text'] = df['Body']
+    df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
+
+get_scrubbed_questions("clean_questions.csv")
+get_scrubbed_answers("clean_answers.csv")
 
 end = time.time()
 
 print("Execution Time {0:.4f} seconds".format(end-start))
-print("COMPLETE scrubbing {0}".format(fileName))
+print("COMPLETE scrubbing")

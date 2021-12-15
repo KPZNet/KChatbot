@@ -9,6 +9,50 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 import pickle
 
+
+def vectorize_sentence(stnc):
+
+    words = open("cc.en.300.vec","r").read().splitlines()
+
+    _words = dict()
+    for w in words[1]:
+        w = w.split()
+        word = w.pop(0)
+        _words[word] = list(map(float, w))
+
+
+def make_sentence_vector(tokens, words):
+    sentence_matrix =[]
+    for t in tokens:
+        if t in words:
+            sentence_matrix.append(words[t])
+        else:
+            print(t, " was not found")
+    sentence_matrix = np.array(sentence_matrix)
+    return np.average(sentence_matrix,axis=0)
+
+sentence = "Hello my name"
+tokens = sentence.split()
+tokens
+
+vector = make_sentence_vector(tokens, words)
+vector.shape
+
+def tell_me_how_similar(s1, s2, words):
+    v1 = make_sentence_vector(s1, words)
+    v2 = make_sentence_vector(s2, words)
+    return cosine(v1,v2)
+
+sentence = "Hello my name is bob"
+tokens1 = sentence.split()
+sentence = "Hello my name is joe"
+tokens2 = sentence.split()
+
+tell_me_how_similar(tokens1,tokens2,words)
+
+
+
+
 def __readin_intensions(tfile):
     with open(tfile) as file:
         data = json.load(file)
