@@ -24,11 +24,12 @@ from autocorrect import Speller
 
 dtypes_questions = {'Id':'int32', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
 
+start = time.time()
 df_questions = pd.read_csv('pythonpack/questions.csv',
                            usecols=['Id', 'Score', 'Title', 'Body'],
                            encoding = "ISO-8859-1",
                            dtype=dtypes_questions,
-                           nrows=10000
+                           nrows=2000
                            )
 
 df_questions[['Title', 'Body']] = df_questions[['Title', 'Body']].applymap(lambda x: str(x).encode("utf-8", errors='surrogatepass').decode("ISO-8859-1", errors='surrogatepass'))
@@ -187,6 +188,7 @@ def lemmatize_text(text):
             lemmatized_text.append(lemmatizer.lemmatize(word)) # If no tags has been found, perform a non specific lemmatization
     return " ".join(lemmatized_text)
 
+
 df_questions['Title'] = df_questions['Title'].apply(lambda x: lemmatize_text(x))
 df_questions['Body'] = df_questions['Body'].apply(lambda x: lemmatize_text(x))
 
@@ -195,6 +197,8 @@ df_questions['Body'][11]
 df_questions['Text'] = df_questions['Title'] + ' ' + df_questions['Body']
 
 
-df_questions.to_csv('df_questions_fullclean.csv', encoding='utf-8', errors='surrogatepass')
+df_questions.to_csv('df_questions_fullclean1.csv', encoding='utf-8', errors='surrogatepass')
 
+end = time.time()
+print("The time of execution of above program is :", end-start)
 print("COMPLETE")
