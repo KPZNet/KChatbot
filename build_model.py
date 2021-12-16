@@ -8,24 +8,30 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 import pickle
+import nltk
+
+from gensim.models import FastText
+from gensim.models import KeyedVectors
 
 
 def get_words():
-    words = open("cc.en.300.vec","r").read().splitlines()
-    return words
+    en_model = KeyedVectors.load_word2vec_format('cc.en.300.vec')
+    return en_model
 
 
 def make_sentence_vector(tokens, words):
     sentence_matrix =[]
     for t in tokens:
-        if t in words:
-            sentence_matrix.append(words[t])
-        else:
-            print(t, " was not found")
-    sentence_matrix = np.array(sentence_matrix)
+        try:
+            if t in words:
+                sentence_matrix.append(words[t])
+            else:
+                print(t, " was not found")
+        except Exception:
+            pass
+    if len(sentence_matrix) != 0:
+        sentence_matrix =  np.array(sentence_matrix)
     return np.average(sentence_matrix,axis=0)
-
-
 
 
 def __readin_intensions(tfile):
@@ -56,9 +62,9 @@ def __label_encoder(training_labels):
     return lbl_encoder, training_labels
 
 def __tokenize_vobabulary(training_sentences):
-    vocab_size = 1000
+    vocab_size = 5000
     embedding_dim = 16
-    max_len = 20
+    max_len = 100
     oov_token = "<OOV>"
     
     tokenizer = Tokenizer(num_words=vocab_size, oov_token=oov_token)
@@ -66,9 +72,39 @@ def __tokenize_vobabulary(training_sentences):
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(training_sentences)
     padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
+    #padded_sequences = pad_sequences(sequences, truncating='post')
+
+    max_len = padded_sequences.shape[1]
+
     return embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index
 
+
+def __tokenize_vobabulary2(training_sentences, words):
+    vocab_size = 1000
+    embedding_dim = 16
+    max_len = 300
+    oov_token = "<OOV>"
+
+    ps = []
+    for s in training_sentences:
+        stok= nltk.word_tokenize(s)
+        p = make_sentence_vector(stok, words)
+        ps.append(p)
+    ps
+
+    # Create a matrix of 3x4 dimensions - 3 rows and four columns
+    array_2d = np.ndarray((2000,300))
+    # Populate the 2 dimensional array created using nump.ndarray
+    for x in range(0, array_2d.shape[0]):
+        for y in range(0, array_2d.shape[1]):
+            array_2d[x][y] = ps[x][y]
+
+    ps = array_2d
+
+    return embedding_dim, max_len, oov_token, ps, vocab_size
+
 def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels):
+
     model = Sequential()
     model.add(Embedding(vocab_size, embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
@@ -134,10 +170,11 @@ def build():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
+    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, words)
     epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
     __save_model_to_file(model)
 
-    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
+    #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
 
 
 if __name__ == "__main__":
