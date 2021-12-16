@@ -22,20 +22,18 @@ from nlpaug.util.file.download import DownloadUtil
 #exit(0)
 
 def get_randos(text):
-    text = "What is your recommended book on Bayesian Statistics?"
+    at = []
+    at.append(text)
+    aug = naw.SynonymAug(aug_src='wordnet')
+    t = aug.augment(text)
+    at.append(t)
+    t = aug.augment(text)
+    at.append(t)
+    t = aug.augment(text)
+    at.append(t)
 
-    try:
-        aug = naw.WordEmbsAug(model_type='word2vec', model_path='cc.en.300.vec', action="substitute")
-    except Exception:
-        print(Exception)
+    return at
 
-
-    augmented_text = aug.augment(text, n=5)
-    print("Original:")
-    print(text)
-    print("Augmented Text:")
-    print(augmented_text)
-    return augmented_text
 
 
 def build_answer_dictionary(dfa):
@@ -67,17 +65,21 @@ def csv_to_json(cQ, cA, jsonFilePath):
         with open(cQ, encoding='utf-8') as csvfQ:
             csvReaderQ = csv.DictReader(csvfQ)
 
+            irow = 0
             for row in csvReaderQ:
                 id = row['Id']
                 rs = find_parent( id , answersDict)
                 jtag = row["Title"]
                 patterns = get_randos(jtag)
                 jpatterns = patterns #row["Body"]
-                jtag_clean = row["Title_clean"]
-                jpatterns_clean = row["Body_clean"]
-                jresponses = rs #[b['Body'] for b in rs]
-                jrec = {'id':id, 'tag':jtag, 'pattern':jpatterns, 'tag_clean':jtag_clean, 'pattern_clean':jpatterns_clean,'response':jresponses}
+                #jtag_clean = row["Title_clean"]
+                #jpatterns_clean = row["Body_clean"]
+                jresponses = [b['Body'] for b in rs]
+                jrec = {'tag':id, 'patterns':jpatterns ,'responses':jresponses}
                 jsonArray.append(jrec)
+                irow += 1
+                if irow >= 500:
+                    break
 
     #convert python jsonArray to JSON String and write to file
     with open(jsonFilePath, 'w', encoding='utf-8') as jsonf:

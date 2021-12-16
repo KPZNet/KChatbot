@@ -131,7 +131,7 @@ def load_pickles():
 
 def build():
     #words = get_words()
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents.json')
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
     epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
