@@ -371,6 +371,7 @@ workspace.code-workspace
 #Visual Studio
 *.sln
 *.iml
+*.pyproj
 
 #Model
 \variables
@@ -381,5 +382,8 @@ launch.json
 #FilesDirectories
 datasciencepack
 *.csv
+WordVectorDatabase
+PythonPack
+*.json
 
 

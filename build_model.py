@@ -9,19 +9,21 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 import pickle
 import nltk
+import pandas as pd
 
 from gensim.models import FastText
 from gensim.models import KeyedVectors
 
+from sentence_transformers import SentenceTransformer
+sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-def get_words():
-    en_model = KeyedVectors.load_word2vec_format('cc.en.300.vec')
-    return en_model
+def cosine(u, v):
+    return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
 
-def make_sentence_vector(tokens, words):
+def make_sentence_vector(sentence, words):
     sentence_matrix =[]
-    for t in tokens:
+    for t in sentence:
         try:
             if t in words:
                 sentence_matrix.append(words[t])
@@ -58,42 +60,55 @@ def __readin_intensions(tfile):
 def __label_encoder(training_labels):
     lbl_encoder = LabelEncoder()
     lbl_encoder.fit(training_labels)
-    training_labels = lbl_encoder.transform(training_labels)
-    return lbl_encoder, training_labels
+    training_labels_encoded = lbl_encoder.transform(training_labels)
+    return lbl_encoder, training_labels_encoded
 
 def __tokenize_vobabulary(training_sentences):
-    vocab_size = 5000
-    embedding_dim = 16
-    max_len = 100
+    vocab_size = 1000
+    embedding_dim = 300
+    max_len = 20
     oov_token = "<OOV>"
     
     tokenizer = Tokenizer(num_words=vocab_size, oov_token=oov_token)
     tokenizer.fit_on_texts(training_sentences)
     word_index = tokenizer.word_index
     sequences = tokenizer.texts_to_sequences(training_sentences)
-    padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
-    #padded_sequences = pad_sequences(sequences, truncating='post')
+    #padded_sequences = pad_sequences(sequences, truncating='post', maxlen=max_len)
+    padded_sequences = pad_sequences(sequences, truncating='post')
 
+    recs = padded_sequences.shape[0]
     max_len = padded_sequences.shape[1]
+    vocab_size = len(word_index) + 1
+
+    print("Number of Query Records = {0}".format(recs))
+    print("Max sentence vector length = {0}".format(max_len))
+    print("Number of Words = {0}".format(vocab_size))
 
     return embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index
 
 
-def __tokenize_vobabulary2(training_sentences, words):
-    vocab_size = 1000
+def __tokenize_vobabulary2(training_sentences):
+    vocab_size = 3000
     embedding_dim = 16
-    max_len = 300
+    max_len = 0
     oov_token = "<OOV>"
 
+    i = 0
+    l = len(training_sentences)
     ps = []
-    for s in training_sentences:
-        stok= nltk.word_tokenize(s)
-        p = make_sentence_vector(stok, words)
-        ps.append(p)
-    ps
 
+    for s in training_sentences:
+        if i % 10 == 0:
+            print("Vectorized {0} / {1} sentences".format(i, l))
+        i += 1
+
+        p = sbert_model.encode([s])[0]
+        max_len = len(p)
+        ps.append(p)
+
+    rows = len(ps)
     # Create a matrix of 3x4 dimensions - 3 rows and four columns
-    array_2d = np.ndarray((2000,300))
+    array_2d = np.ndarray((rows, max_len))
     # Populate the 2 dimensional array created using nump.ndarray
     for x in range(0, array_2d.shape[0]):
         for y in range(0, array_2d.shape[1]):
@@ -103,10 +118,28 @@ def __tokenize_vobabulary2(training_sentences, words):
 
     return embedding_dim, max_len, oov_token, ps, vocab_size
 
+
+
+
+def __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels):
+
+    model = Sequential()
+    model.add(Dense(16, input_dim=max_len))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dense(num_classes, activation='softmax'))
+    
+    model.compile(loss='sparse_categorical_crossentropy', 
+                  optimizer='adam', metrics=['accuracy'])
+    
+    model.summary()
+    epochs = 500
+    history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
+    return epochs, history, model
+
 def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels):
 
     model = Sequential()
-    model.add(Embedding(vocab_size, embedding_dim, input_length=max_len))
+    model.add(Embedding(input_dim = vocab_size, output_dim = embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
     model.add(Dense(16, activation='relu'))
     model.add(Dense(16, activation='relu'))
@@ -117,7 +150,7 @@ def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,
     
     model.summary()
     epochs = 500
-    history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs)
+    history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
     return epochs, history, model
 
 # to save the trained model
@@ -166,12 +199,11 @@ def load_pickles():
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
 
 def build():
-    #words = get_words()
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
-    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, words)
-    epochs, history, model = __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
+    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences)
+    epochs, history, model = __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
     __save_model_to_file(model)
 
     #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)

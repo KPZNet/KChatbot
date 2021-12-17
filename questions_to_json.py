@@ -8,29 +8,17 @@ import nlpaug.augmenter.sentence as nas
 import nlpaug.flow as nafc
 from nlpaug.util import Action
 from tqdm import tqdm
-
-
 from nlpaug.util import Action
-
 from nlpaug.util.file.download import DownloadUtil
 
-# download word2vec
-#DownloadUtil.download_word2vec(dest_dir='.')
-#DownloadUtil.download_glove(model_name='glove.6B', dest_dir='.')
-#DownloadUtil.download_fasttext(model_name='wiki-news-300d-1M', dest_dir='.')
 
-#exit(0)
-
-def get_randos(text):
+def get_randos(text, numrandos):
     at = []
     at.append(text)
     aug = naw.SynonymAug(aug_src='wordnet')
-    t = aug.augment(text)
-    at.append(t)
-    t = aug.augment(text)
-    at.append(t)
-    t = aug.augment(text)
-    at.append(t)
+    for i in range(numrandos):
+        t = aug.augment(text)
+        at.append(t)
 
     return at
 
@@ -56,7 +44,7 @@ def find_parent(pid, dr):
         rs = dr[pid]
     return rs
 
-def csv_to_json(cQ, cA, jsonFilePath):
+def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
     jsonArray = []
 
     with open(cA, encoding='utf-8') as csvfA:
@@ -67,10 +55,14 @@ def csv_to_json(cQ, cA, jsonFilePath):
 
             irow = 0
             for row in csvReaderQ:
+
+                if irow % 10 == 0:
+                    print("Processing row {0} / {1} with {2} augments".format(irow, total_sets, augs))
+
                 id = row['Id']
                 rs = find_parent( id , answersDict)
                 jtag = row["Title"]
-                patterns = get_randos(jtag)
+                patterns = get_randos(jtag, augs)
                 jpatterns = patterns #row["Body"]
                 #jtag_clean = row["Title_clean"]
                 #jpatterns_clean = row["Body_clean"]
@@ -78,7 +70,7 @@ def csv_to_json(cQ, cA, jsonFilePath):
                 jrec = {'tag':id, 'patterns':jpatterns ,'responses':jresponses}
                 jsonArray.append(jrec)
                 irow += 1
-                if irow >= 500:
+                if irow >= total_sets:
                     break
 
     #convert python jsonArray to JSON String and write to file
@@ -90,5 +82,5 @@ def csv_to_json(cQ, cA, jsonFilePath):
 cQ = r'clean_questions.csv'
 cA = r'clean_answers.csv'
 jsonFilePath = r'intents_qa.json'
-csv_to_json(cQ, cA, jsonFilePath)
+csv_to_json(cQ, cA, 100, 20, jsonFilePath)
 print("Completed intents_qa JSON file")
