@@ -137,7 +137,7 @@ def __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences
 
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
-    model.add(Dense(16, activation='relu'))
+    #model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', 
@@ -214,8 +214,8 @@ def build():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     
-    #embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
-    embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
+    embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
+    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
     epochs, history, model = __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
     __save_model_to_file(model)
 

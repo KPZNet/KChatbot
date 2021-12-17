@@ -22,8 +22,6 @@ def get_randos(text, numrandos):
 
     return at
 
-
-
 def build_answer_dictionary(dfa):
     rdict = {}
     for row in dfa:
