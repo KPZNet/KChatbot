@@ -21,21 +21,6 @@ def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
 
-def make_sentence_vector(sentence, words):
-    sentence_matrix =[]
-    for t in sentence:
-        try:
-            if t in words:
-                sentence_matrix.append(words[t])
-            else:
-                print(t, " was not found")
-        except Exception:
-            pass
-    if len(sentence_matrix) != 0:
-        sentence_matrix =  np.array(sentence_matrix)
-    return np.average(sentence_matrix,axis=0)
-
-
 def __readin_intensions(tfile):
     with open(tfile) as file:
         data = json.load(file)
@@ -84,7 +69,7 @@ def __tokenize_vobabulary(training_sentences):
     print("Max sentence vector length = {0}".format(max_len))
     print("Number of Words = {0}".format(vocab_size))
 
-    return embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index
+    return padded_sequences, tokenizer
 
 def pickleSentences(sentences):
     with open('transformed_sents.pickle', 'wb') as handle:
@@ -133,23 +118,23 @@ def __tokenize_vobabulary2(training_sentences, loadpickle = False, picklesentenc
 
 
 
-def __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels):
-
+def __build_model2(num_classes,padded_sequences,training_labels):
+    epochs = 500
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
     #model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
-    model.compile(loss='sparse_categorical_crossentropy', 
-                  optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     
-    model.summary()
-    epochs = 500
+    model.summary
     history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
     return epochs, history, model
 
-def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels):
-
+def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
+    epochs = 500
+    embedding_dim = 16
+    max_len = padded_sequences.shape[1]
     model = Sequential()
     model.add(Embedding(input_dim = vocab_size, output_dim = embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
@@ -157,11 +142,9 @@ def __build_model(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,
     model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
-    model.compile(loss='sparse_categorical_crossentropy', 
-                  optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     
     model.summary()
-    epochs = 500
     history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
     return epochs, history, model
 
@@ -213,10 +196,15 @@ def load_pickles():
 def build():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    
-    embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
+    padded_sequences, tokenizer = __tokenize_vobabulary(training_sentences)
+
     #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
-    epochs, history, model = __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
+
+    vocabulary_size = len(tokenizer.word_index)
+
+    epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
+    #epochs, history, model = __build_model2(num_classes,padded_sequences,training_labels_encoded)
+    
     __save_model_to_file(model)
 
     #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
