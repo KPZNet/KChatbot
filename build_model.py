@@ -86,8 +86,17 @@ def __tokenize_vobabulary(training_sentences):
 
     return embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index
 
+def pickleSentences(sentences):
+    with open('transformed_sents.pickle', 'wb') as handle:
+        pickle.dump(sentences, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-def __tokenize_vobabulary2(training_sentences):
+def loadsentencespickle():
+    # load tokenizer object
+    with open('transformed_sents.pickle', 'rb') as handle:
+        sentences = pickle.load(handle)
+    return sentences
+
+def __tokenize_vobabulary2(training_sentences, loadpickle = False, picklesentences = False):
     vocab_size = 3000
     embedding_dim = 16
     max_len = 0
@@ -97,25 +106,28 @@ def __tokenize_vobabulary2(training_sentences):
     l = len(training_sentences)
     ps = []
 
-    for s in training_sentences:
-        if i % 10 == 0:
-            print("Vectorized {0} / {1} sentences".format(i, l))
-        i += 1
+    if loadpickle:
+        ps = loadsentencespickle()
+    else:
+        for s in training_sentences:
+            if i % 10 == 0:
+                print("Vectorized {0} / {1} sentences".format(i, l))
+            i += 1
 
-        p = sbert_model.encode([s])[0]
-        max_len = len(p)
-        ps.append(p)
+            p = sbert_model.encode([s])[0]
+            ps.append(p)
+        if picklesentences:
+            pickleSentences(ps)
 
-    rows = len(ps)
+    max_len = ps.shape[1]
     # Create a matrix of 3x4 dimensions - 3 rows and four columns
-    array_2d = np.ndarray((rows, max_len))
+    array_2d = np.ndarray((len(ps), max_len))
     # Populate the 2 dimensional array created using nump.ndarray
     for x in range(0, array_2d.shape[0]):
         for y in range(0, array_2d.shape[1]):
             array_2d[x][y] = ps[x][y]
 
     ps = array_2d
-
     return embedding_dim, max_len, oov_token, ps, vocab_size
 
 
@@ -199,10 +211,11 @@ def load_pickles():
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
 
 def build():
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents.json')
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
-    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences)
+    
+    #embedding_dim, max_len, oov_token, padded_sequences, sequences, tokenizer, vocab_size, word_index = __tokenize_vobabulary(training_sentences)
+    embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
     epochs, history, model = __build_model2(vocab_size,embedding_dim,max_len,num_classes,padded_sequences,training_labels_encoded)
     __save_model_to_file(model)
 
