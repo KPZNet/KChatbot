@@ -17,8 +17,6 @@ from gensim.models import KeyedVectors
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-use_model_A = True
-
 def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
@@ -121,14 +119,15 @@ def __build_vectorized_model(num_classes,padded_sequences,training_labels):
     epochs = 500
     max_len = padded_sequences.shape[1]
     model = Sequential()
-    model.add(Dense(32, input_dim=max_len))
+    model.add(Dense(16, input_dim=max_len))
     model.add(Dense(16, activation='relu'))
     #model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     
-    model.summary
+    model.summary()
+
     history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
     return epochs, history, model
 
@@ -140,7 +139,7 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
     model.add(Embedding(input_dim = vocab_size, output_dim = embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
     model.add(Dense(32, activation='relu'))
-    model.add(Dense(16, activation='relu'))
+    model.add(Dense(32, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -193,7 +192,7 @@ def build_B():
     epochs, history, model = __build_vectorized_model(num_classes,padded_sequences,training_labels_encoded)
     
     __save_model_to_file(model)
-    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
+    #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
 
 
 def build_A():
@@ -214,12 +213,7 @@ def build_pickle_response_vectors():
 
 if __name__ == "__main__":
 
-    #build_pickle_response_vectors()
-    #exit(0)
-
     print("Building Model")
-    if use_model_A:
-        build_A()
-    else:
-        build_B()
+    #build_A()
+    build_B()
     print("Built")

@@ -143,7 +143,7 @@ def scrub_text_loop_minimal(filename, df):
     for index in range(len(df)):
 
         if index % t_percent == 0:
-            print("Processing Row {0} / {1} Time {2:.4f} - {3}".format(index,l, time.time()-start, filename))
+            print("Processing Row {0} / {1} - {2}".format(index,l, filename))
 
         x = df.iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
@@ -160,7 +160,7 @@ def scrub_text_loop_all(filename, df):
     for index in range(len(df)):
 
         if index % t_percent == 0:
-            print("Processing Row {0} / {1} Time {2:.4f} - {3}".format(index,l, time.time()-start, filename))
+            print("Processing Row {0} / {1} - {2}".format(index,l, filename))
 
         x = df.iloc[index]
         x= BeautifulSoup(x, 'html.parser').get_text()
@@ -176,8 +176,8 @@ def scrub_text_loop_all(filename, df):
 
     return t
 
-def get_scrubbed_questions(filename):
-    df = readinquestions(1000000,'2016-09-01')
+def get_scrubbed_questions(filename, time_cut, max_sets):
+    df = readinquestions(max_sets, time_cut) 
     dfl = len(df)
     print("Read in {0} QUESTIONS".format(dfl))
     df['Body_clean'] = scrub_text_loop_all(filename, df['Body'])
@@ -186,8 +186,8 @@ def get_scrubbed_questions(filename):
     df['Title'] = scrub_text_loop_minimal(filename, df['Title'])
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
-def get_scrubbed_answers(filename):
-    df = readinanswers(1000000,'2016-08-01')
+def get_scrubbed_answers(filename, time_cut, max_sets):
+    df = readinanswers(max_sets,time_cut) 
     dfl = len(df)
     print("Read in {0} ANSWERS".format(dfl))
     b = scrub_text_loop_minimal(filename, df['Body'])
@@ -195,13 +195,16 @@ def get_scrubbed_answers(filename):
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 
-def get_QA():
+def get_QA(time_cut_Q, time_cut_A, max_records_Q = 100000000, max_records_A = 100000000):
     start = time.time()
 
-    get_scrubbed_questions("clean_questions.csv")
-    get_scrubbed_answers("clean_answers.csv")
+    get_scrubbed_questions("clean_questions.csv", time_cut_Q, max_records_Q)
+    get_scrubbed_answers("clean_answers.csv", time_cut_A, max_records_A)
 
     end = time.time()
 
     print("Execution Time {0:.4f} seconds".format(end-start))
     print("COMPLETE scrubbing")
+
+def query_QandA():
+    get_QA('2016-09-01','2016-08-01')

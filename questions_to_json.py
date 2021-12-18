@@ -77,9 +77,12 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
         jsonString = json.dumps(jdict, indent=4)
         jsonf.write(jsonString)
 
-def convert_qa_to_json():
+def convert_qa_to_json(max_sets, num_augmented_answers):
     cQ = r'clean_questions.csv'
     cA = r'clean_answers.csv'
     jsonFilePath = r'intents_qa.json'
-    csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
+    csv_to_json(cQ, cA, max_sets, num_augmented_answers, jsonFilePath)
     print("Completed intents_qa JSON file")
+
+def convert_sets_to_json():
+    convert_qa_to_json(10000, 40)
