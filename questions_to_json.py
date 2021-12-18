@@ -54,7 +54,7 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
             irow = 0
             for row in csvReaderQ:
 
-                if irow % 10 == 0:
+                if irow % 100 == 0:
                     print("Processing row {0} / {1} with {2} augments".format(irow, total_sets, augs))
 
                 id = row['Id']
@@ -77,8 +77,9 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
         jsonString = json.dumps(jdict, indent=4)
         jsonf.write(jsonString)
 
-cQ = r'clean_questions.csv'
-cA = r'clean_answers.csv'
-jsonFilePath = r'intents_qa.json'
-csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
-print("Completed intents_qa JSON file")
+def convert_qa_to_json():
+    cQ = r'clean_questions.csv'
+    cA = r'clean_answers.csv'
+    jsonFilePath = r'intents_qa.json'
+    csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
+    print("Completed intents_qa JSON file")
