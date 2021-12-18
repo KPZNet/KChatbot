@@ -387,3 +387,7 @@ PythonPack
 *.json
 
 
+*.bin
+*.vec
+*.txt
+*.zip

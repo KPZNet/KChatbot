@@ -81,7 +81,7 @@ def loadsentencespickle():
         sentences = pickle.load(handle)
     return sentences
 
-def __tokenize_vobabulary2(training_sentences, loadpickle = False, picklesentences = False):
+def __tokenize_vobabulary2(training_sentences):
     vocab_size = 3000
     embedding_dim = 16
     max_len = 0
@@ -91,18 +91,7 @@ def __tokenize_vobabulary2(training_sentences, loadpickle = False, picklesentenc
     l = len(training_sentences)
     ps = []
 
-    if loadpickle:
-        ps = loadsentencespickle()
-    else:
-        for s in training_sentences:
-            if i % 10 == 0:
-                print("Vectorized {0} / {1} sentences".format(i, l))
-            i += 1
-
-            p = sbert_model.encode([s])[0]
-            ps.append(p)
-        if picklesentences:
-            pickleSentences(ps)
+    ps = loadsentencespickle()
 
     max_len = ps.shape[1]
     # Create a matrix of 3x4 dimensions - 3 rows and four columns
@@ -115,14 +104,36 @@ def __tokenize_vobabulary2(training_sentences, loadpickle = False, picklesentenc
     ps = array_2d
     return embedding_dim, max_len, oov_token, ps, vocab_size
 
+def __tokenize_vobabulary_2_and_pickle(training_sentences):
+    vocab_size = 3000
+    embedding_dim = 16
+    max_len = 0
+    oov_token = "<OOV>"
 
+    i = 0
+    l = len(training_sentences)
+    ps = []
+
+
+    for s in training_sentences:
+        if i % 10 == 0:
+            print("Vectorized {0} / {1} sentences".format(i, l))
+        i += 1
+
+        p = sbert_model.encode([s])[0]
+        ps.append(p)
+
+    pickleSentences(ps)
+    print("Pickled Sentence Vectors")
+    return ps
 
 
 def __build_model2(num_classes,padded_sequences,training_labels):
     epochs = 500
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
-    #model.add(Dense(16, activation='relu'))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -138,6 +149,7 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
     model = Sequential()
     model.add(Embedding(input_dim = vocab_size, output_dim = embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
+    model.add(Dense(16, activation='relu'))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
@@ -196,21 +208,29 @@ def load_pickles():
 def build():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    padded_sequences, tokenizer = __tokenize_vobabulary(training_sentences)
+    #padded_sequences, tokenizer = __tokenize_vobabulary(training_sentences)
 
-    #embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
+    embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
 
     vocabulary_size = len(tokenizer.word_index)
 
-    epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
-    #epochs, history, model = __build_model2(num_classes,padded_sequences,training_labels_encoded)
+    #epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
+    epochs, history, model = __build_model2(num_classes,padded_sequences,training_labels_encoded)
     
-    __save_model_to_file(model)
-
+    #__save_model_to_file(model)
     #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
+
+def build_pickle_response_vectors():
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
+    lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
+    __tokenize_vobabulary_2_and_pickle(training_sentences)
 
 
 if __name__ == "__main__":
+
+    build_pickle_response_vectors()
+    exit(0)
+
     print("Building Model")
     build()
     print("Built")

@@ -80,5 +80,5 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
 cQ = r'clean_questions.csv'
 cA = r'clean_answers.csv'
 jsonFilePath = r'intents_qa.json'
-csv_to_json(cQ, cA, 100, 20, jsonFilePath)
+csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
 print("Completed intents_qa JSON file")
