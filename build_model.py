@@ -17,6 +17,8 @@ from gensim.models import KeyedVectors
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
+use_model_A = True
+
 def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
@@ -71,49 +73,35 @@ def __tokenize_vobabulary(training_sentences):
 
     return padded_sequences, tokenizer
 
-def pickleSentences(sentences):
-    with open('transformed_sents.pickle', 'wb') as handle:
+
+def pickle_vectorized_sentences(sentences):
+    with open('vectorized_sentences.pickle', 'wb') as handle:
         pickle.dump(sentences, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-def loadsentencespickle():
-    # load tokenizer object
-    with open('transformed_sents.pickle', 'rb') as handle:
+def load_vectorized_sentences():
+    with open('vectorized_sentences.pickle', 'rb') as handle:
         sentences = pickle.load(handle)
     return sentences
 
-def __tokenize_vobabulary2(training_sentences):
-    vocab_size = 3000
-    embedding_dim = 16
-    max_len = 0
-    oov_token = "<OOV>"
-
-    i = 0
-    l = len(training_sentences)
-    ps = []
-
-    ps = loadsentencespickle()
-
-    max_len = ps.shape[1]
-    # Create a matrix of 3x4 dimensions - 3 rows and four columns
+def convert_to_ndarr(ps):
     array_2d = np.ndarray((len(ps), max_len))
-    # Populate the 2 dimensional array created using nump.ndarray
+    
     for x in range(0, array_2d.shape[0]):
+        if x % 100 == 0:
+            print("Converted {0}/{1}".format(x, l))
+    
         for y in range(0, array_2d.shape[1]):
             array_2d[x][y] = ps[x][y]
-
+    
     ps = array_2d
-    return embedding_dim, max_len, oov_token, ps, vocab_size
+    return ps
 
 def __tokenize_vobabulary_2_and_pickle(training_sentences):
-    vocab_size = 3000
-    embedding_dim = 16
     max_len = 0
     oov_token = "<OOV>"
 
     i = 0
-    l = len(training_sentences)
     ps = []
-
 
     for s in training_sentences:
         if i % 10 == 0:
@@ -123,17 +111,19 @@ def __tokenize_vobabulary_2_and_pickle(training_sentences):
         p = sbert_model.encode([s])[0]
         ps.append(p)
 
-    pickleSentences(ps)
-    print("Pickled Sentence Vectors")
+    ps = convert_to_ndarr(ps)
+    pickle_vectorized_sentences(ps)
+    print("Pickled Vectorized Sentence Vectors")
     return ps
 
 
-def __build_model2(num_classes,padded_sequences,training_labels):
+def __build_vectorized_model(num_classes,padded_sequences,training_labels):
     epochs = 500
+    max_len = padded_sequences.shape[1]
     model = Sequential()
-    model.add(Dense(16, input_dim=max_len))
+    model.add(Dense(32, input_dim=max_len))
     model.add(Dense(16, activation='relu'))
-    model.add(Dense(16, activation='relu'))
+    #model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -149,8 +139,7 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
     model = Sequential()
     model.add(Embedding(input_dim = vocab_size, output_dim = embedding_dim, input_length=max_len))
     model.add(GlobalAveragePooling1D())
-    model.add(Dense(16, activation='relu'))
-    model.add(Dense(16, activation='relu'))
+    model.add(Dense(32, activation='relu'))
     model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
@@ -160,65 +149,62 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
     history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
     return epochs, history, model
 
-# to save the trained model
 def __save_model_to_file(model):
     return model.save("chat_model")
 
 def pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences):
-    # to save the fitted tokenizer
+
     with open('tokenizer.pickle', 'wb') as handle:
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the fitted label encoder
+
     with open('label_encoder.pickle', 'wb') as ecn_file:
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the responses
+   
     with open('responses.pickle', 'wb') as ecn_file:
         pickle.dump(responses, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the intent JSON
+   
     with open('intent.pickle', 'wb') as ecn_file:
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the intent JSON
+  
     with open('training_labels.pickle', 'wb') as ecn_file:
         pickle.dump(training_labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the intent JSON
-    with open('training_sentences.pickle', 'wb') as ecn_file:
-        pickle.dump(training_sentences, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-    # to save the intent JSON
+   
     with open('labels.pickle', 'wb') as ecn_file:
         pickle.dump(labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 def load_pickles():
-    # load tokenizer object
+    
     with open('tokenizer.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
-    # load label encoder object
     with open('label_encoder.pickle', 'rb') as enc:
         lbl_encoder = pickle.load(enc)
-    # load label encoder object
     with open('intent.pickle', 'rb') as enc:
         intent = pickle.load(enc)
     with open('training_labels.pickle', 'rb') as enc:
         training_labels = pickle.load(enc)
-    with open('training_sentences.pickle', 'rb') as enc:
-        training_sentences = pickle.load(enc)
     with open('labels.pickle', 'rb') as enc:
         labels = pickle.load(enc)
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
 
-def build():
+def build_B():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    #padded_sequences, tokenizer = __tokenize_vobabulary(training_sentences)
-
-    embedding_dim, max_len, oov_token, padded_sequences, vocab_size = __tokenize_vobabulary2(training_sentences, True, False)
-
-    vocabulary_size = len(tokenizer.word_index)
-
-    #epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
-    epochs, history, model = __build_model2(num_classes,padded_sequences,training_labels_encoded)
+    padded_sequences = load_vectorized_sentences()
+    epochs, history, model = __build_vectorized_model(num_classes,padded_sequences,training_labels_encoded)
     
-    #__save_model_to_file(model)
-    #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences)
+    __save_model_to_file(model)
+    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
+
+
+def build_A():
+    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
+    lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
+    padded_sequences, tokenizer = __tokenize_vobabulary(training_sentences)
+    vocabulary_size = len(tokenizer.word_index)
+    epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
+    __save_model_to_file(model)
+    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
+
 
 def build_pickle_response_vectors():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
@@ -228,9 +214,12 @@ def build_pickle_response_vectors():
 
 if __name__ == "__main__":
 
-    build_pickle_response_vectors()
-    exit(0)
+    #build_pickle_response_vectors()
+    #exit(0)
 
     print("Building Model")
-    build()
+    if use_model_A:
+        build_A()
+    else:
+        build_B()
     print("Built")
