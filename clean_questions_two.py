@@ -20,8 +20,6 @@ import contractions
 # import pycontractions # Alternative better package for removing contractions
 from autocorrect import Speller
 
-start = time.time()
-
 
 spell = Speller()
 token = ToktokTokenizer()
@@ -116,7 +114,7 @@ def readinquestions(rows_to_read, date_cut):
     df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
     df = df.loc[(df['CreationDate'] >= date_cut)]
     #df_questions = df_questions[df_questions["Score"] >= 0]
-    #df = df[:2000]
+    df = df[:rows_to_read]
     df.info()
     return df
 
@@ -133,7 +131,7 @@ def readinanswers(rows_to_read, date_cut):
     df['CreationDate'] = pd.to_datetime(df['CreationDate'], format='%Y-%m-%d')
     df = df.loc[(df['CreationDate'] >= date_cut)]
     #df_questions = df_questions[df_questions["Score"] >= 0]
-    #df = df[:2000]
+    df = df[:rows_to_read]
     df.info()
     return df
 
@@ -180,6 +178,8 @@ def scrub_text_loop_all(filename, df):
 
 def get_scrubbed_questions(filename):
     df = readinquestions(1000000,'2016-09-01')
+    dfl = len(df)
+    print("Read in {0} QUESTIONS".format(dfl))
     df['Body_clean'] = scrub_text_loop_all(filename, df['Body'])
     df['Title_clean'] = scrub_text_loop_all(filename, df['Title'])
     df['Body'] = scrub_text_loop_minimal(filename, df['Body'])
@@ -188,14 +188,20 @@ def get_scrubbed_questions(filename):
 
 def get_scrubbed_answers(filename):
     df = readinanswers(1000000,'2016-08-01')
+    dfl = len(df)
+    print("Read in {0} ANSWERS".format(dfl))
     b = scrub_text_loop_minimal(filename, df['Body'])
     df['Body'] = b
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
-get_scrubbed_questions("clean_questions.csv")
-get_scrubbed_answers("clean_answers.csv")
 
-end = time.time()
+def get_QA():
+    start = time.time()
 
-print("Execution Time {0:.4f} seconds".format(end-start))
-print("COMPLETE scrubbing")
+    get_scrubbed_questions("clean_questions.csv")
+    get_scrubbed_answers("clean_answers.csv")
+
+    end = time.time()
+
+    print("Execution Time {0:.4f} seconds".format(end-start))
+    print("COMPLETE scrubbing")
