@@ -12,6 +12,8 @@ import pickle
 
 import build_model
 
+from build_model import vectorize_input
+
 #build_model.build()
 
 def build_data_dictionary(wdata):
@@ -38,6 +40,10 @@ def load_pickles():
         labels = pickle.load(enc)
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
 
+def vectorize_input(inp):
+    p = build_model.vectorize_input(inp)
+    return p
+
 def chat():
     model = keras.models.load_model('chat_model')
     lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels = load_pickles()
@@ -51,8 +57,8 @@ def chat():
         if inp.lower() == "quit":
             break
 
-        result = model.predict(keras.preprocessing.sequence.pad_sequences(tokenizer.texts_to_sequences([inp]),
-                                             truncating='post', maxlen=max_len))
+        inp_v = vectorize_input(inp)
+        result = model.predict(inp, truncating='post', maxlen=max_len)
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
 
         for i in data['intents']:

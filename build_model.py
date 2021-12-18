@@ -94,6 +94,10 @@ def convert_to_ndarr(ps):
     ps = array_2d
     return ps
 
+def vectorize_input(inp):
+    p = sbert_model.encode([inp])[0]
+    return p
+
 def __tokenize_vobabulary_2_and_pickle(training_sentences):
     max_len = 0
     oov_token = "<OOV>"
@@ -116,12 +120,11 @@ def __tokenize_vobabulary_2_and_pickle(training_sentences):
 
 
 def __build_vectorized_model(num_classes,padded_sequences,training_labels):
-    epochs = 500
+    epochs = 20
     max_len = padded_sequences.shape[1]
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
     model.add(Dense(16, activation='relu'))
-    #model.add(Dense(16, activation='relu'))
     model.add(Dense(num_classes, activation='softmax'))
     
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
