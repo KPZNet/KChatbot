@@ -132,6 +132,7 @@ def __build_vectorized_model(num_classes,padded_sequences,training_labels):
     model.summary()
 
     history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
+
     return epochs, history, model
 
 def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
@@ -154,10 +155,7 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
 def __save_model_to_file(model):
     return model.save("chat_model")
 
-def pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, training_sentences):
-
-    with open('tokenizer.pickle', 'wb') as handle:
-        pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+def pickle_data(labels, lbl_encoder, responses, training_labels):
 
     with open('label_encoder.pickle', 'wb') as ecn_file:
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -167,26 +165,21 @@ def pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels, trai
    
     with open('intent.pickle', 'wb') as ecn_file:
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-  
-    with open('training_labels.pickle', 'wb') as ecn_file:
-        pickle.dump(training_labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
    
     with open('labels.pickle', 'wb') as ecn_file:
         pickle.dump(labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 def load_pickles():
     
-    with open('tokenizer.pickle', 'rb') as handle:
-        tokenizer = pickle.load(handle)
     with open('label_encoder.pickle', 'rb') as enc:
         lbl_encoder = pickle.load(enc)
     with open('intent.pickle', 'rb') as enc:
         intent = pickle.load(enc)
-    with open('training_labels.pickle', 'rb') as enc:
-        training_labels = pickle.load(enc)
+    with open('responses.pickle', 'rb') as enc:
+        responses = pickle.load(enc)
     with open('labels.pickle', 'rb') as enc:
         labels = pickle.load(enc)
-    return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
+    return labels, lbl_encoder, intent, responses
 
 def build_B():
     intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions('intents_qa.json')
@@ -195,7 +188,7 @@ def build_B():
     epochs, history, model = __build_vectorized_model(num_classes,padded_sequences,training_labels_encoded)
     
     __save_model_to_file(model)
-    #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
+    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
 
 
 def build_A():
@@ -205,7 +198,7 @@ def build_A():
     vocabulary_size = len(tokenizer.word_index)
     epochs, history, model = __build_model(vocabulary_size, num_classes,padded_sequences,training_labels_encoded)
     __save_model_to_file(model)
-    pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
+    #pickle_data(labels, lbl_encoder, responses, tokenizer, training_labels)
 
 
 def build_pickle_response_vectors():

@@ -26,16 +26,13 @@ with open("intents.json") as file:
     build_data_dictionary(data)
 
 def load_pickles():
-    with open('tokenizer.pickle', 'rb') as handle:
-        tokenizer = pickle.load(handle)
+
     with open('label_encoder.pickle', 'rb') as enc:
         lbl_encoder = pickle.load(enc)
     with open('intent.pickle', 'rb') as enc:
         intent = pickle.load(enc)
     with open('training_labels.pickle', 'rb') as enc:
         training_labels = pickle.load(enc)
-    with open('training_sentences.pickle', 'rb') as enc:
-        training_sentences = pickle.load(enc)
     with open('labels.pickle', 'rb') as enc:
         labels = pickle.load(enc)
     return lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels
@@ -46,7 +43,7 @@ def vectorize_input(inp):
 
 def chat():
     model = keras.models.load_model('chat_model')
-    lbl_encoder, tokenizer, intent, training_labels, training_sentences, labels = load_pickles()
+    lbl_encoder, intent, training_labels, training_sentences, labels = load_pickles()
 
     # parameters
     max_len = 20
