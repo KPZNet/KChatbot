@@ -270,5 +270,5 @@ def get_QA(time_cut_Q, max_records_Q = 100000000):
     print("COMPLETE scrubbing")
 
 
-get_QA('2016-09-01',100000000)
+get_QA('2016-09-01',10000)
 
