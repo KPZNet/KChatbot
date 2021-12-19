@@ -43,7 +43,10 @@ def chat():
 
         t = tag[0]
         c = rdict[t]
-        print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
+        if len(c) == 0:
+            print("chatbot does not understand")
+        else:
+            print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
 print(Fore.YELLOW + "Welcome to KBot, a data analyist!" + Style.RESET_ALL)

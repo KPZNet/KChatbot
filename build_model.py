@@ -17,7 +17,7 @@ from gensim.models import KeyedVectors
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-intents_file = 'intents.json'
+intents_file = 'intents_qa.json'
 
 def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
@@ -131,7 +131,7 @@ def __tokenize_vobabulary_2(training_sentences):
 
 
 def __build_vectorized_model(num_classes,padded_sequences,training_labels):
-    epochs = 50
+    epochs = 25
     max_len = padded_sequences.shape[1]
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
