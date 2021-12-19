@@ -11,10 +11,8 @@ import random
 import pickle
 
 import build_model
-
 from build_model import vectorize_input
 from build_model import load_pickles
-
 
 def build_data_dictionary(wdata):
     dit = {}
@@ -25,16 +23,13 @@ with open("intents.json") as file:
     data = json.load(file)
     build_data_dictionary(data)
 
-
-
 def vectorize_input(inp):
     p = build_model.vectorize_input( inp )
     return p
 
 def chat():
     model = keras.models.load_model('chat_model')
-    labels, lbl_encoder, responses, training_labels_encoded, num_classes, max_len = load_pickles()
-
+    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes, max_len = load_pickles()
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
@@ -46,15 +41,15 @@ def chat():
         result = model.predict(inp_v)
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
 
-        for i in data['intents']:
-            if i['tag'] == tag:
-                print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(i['responses']))
-
-        # print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL,random.choice(responses))
+        t = tag[0]
+        c = rdict[t]
+        print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
 print(Fore.YELLOW + "Welcome to KBot, a data analyist!" + Style.RESET_ALL)
 chat()
+
+
 
 
 

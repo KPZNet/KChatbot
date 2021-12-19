@@ -31,18 +31,22 @@ def __readin_intensions(tfile):
     training_labels = []
     labels = []
     responses = []
+
+    rdict = {}
     
     for intent in data['intents']:
         for pattern in intent['patterns']:
             training_sentences.append(pattern)
             training_labels.append(intent['tag'])
         responses.append(intent['responses'])
+        rdict[intent['tag']] = intent['responses']
         
         if intent['tag'] not in labels:
             labels.append(intent['tag'])
             
+            
     num_classes = len(labels)
-    return intent, labels, num_classes, responses, training_labels, training_sentences
+    return rdict, intent, labels, num_classes, responses, training_labels, training_sentences
 
 def __label_encoder(training_labels):
     lbl_encoder = LabelEncoder()
@@ -162,7 +166,10 @@ def __build_model(vocab_size, num_classes,padded_sequences,training_labels):
 def __save_model_to_file(model):
     return model.save("chat_model")
 
-def pickle_data(labels, lbl_encoder, responses, training_labels, num_classes, max_length):
+def pickle_data(rdict, labels, lbl_encoder, responses, training_labels, num_classes, max_length):
+
+    with open('rdict.pickle', 'wb') as ecn_file:
+        pickle.dump(rdict, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
     with open('labels.pickle', 'wb') as ecn_file:
         pickle.dump(labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -184,6 +191,9 @@ def pickle_data(labels, lbl_encoder, responses, training_labels, num_classes, ma
 
 def load_pickles():
 
+    with open('rdict.pickle', 'rb') as enc:
+        rdict = pickle.load(enc)
+
     with open('labels.pickle', 'rb') as enc:
         labels = pickle.load(enc)
  
@@ -202,20 +212,20 @@ def load_pickles():
     with open('max_length.pickle', 'rb') as enc:
         max_length = pickle.load(enc)
 
-    return labels, lbl_encoder, responses, training_labels, num_classes, max_length
+    return rdict, labels, lbl_encoder, responses, training_labels, num_classes, max_length
 
 
 
 def build_B():
 
-    intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)
+    rdict, intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
     vectorized_sentences = load_vectorized_sentences()
     max_length = vectorized_sentences.shape[1]
 
     epochs, history, model = __build_vectorized_model(num_classes,vectorized_sentences,training_labels_encoded)
     
-    pickle_data(labels = labels, lbl_encoder = lbl_encoder, 
+    pickle_data(rdict = rdict, labels = labels, lbl_encoder = lbl_encoder, 
                 responses = responses, training_labels = training_labels_encoded, 
                 num_classes = num_classes,max_length = max_length)
     __save_model_to_file(model)
