@@ -19,9 +19,9 @@ def vectorize_input_pythonqa(inp):
     p = build_model.vectorize_all_sentences( [inp] )
     return p
 
-def chat():
-    model = keras.models.load_model('chat_model')
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes, max_len = load_pickles()
+def chat(model_name):
+    model = keras.models.load_model(model_name+'NNModel')
+    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(model_name)
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
@@ -41,8 +41,9 @@ def chat():
             print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
-print(Fore.YELLOW + "Welcome to KBot, a data analyist!" + Style.RESET_ALL)
-chat()
+def start_chat(model_name):
+    print(Fore.YELLOW + "Welcome to KBot data Analyst!" + Style.RESET_ALL)
+    chat(model_name)
 
 
 

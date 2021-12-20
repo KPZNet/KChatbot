@@ -17,7 +17,6 @@ from gensim.models import KeyedVectors
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-intents_file = 'intents_qa.json'
 
 def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
@@ -53,12 +52,12 @@ def __label_encoder(training_labels):
     training_labels_encoded = lbl_encoder.transform(training_labels)
     return lbl_encoder, training_labels_encoded
 
-def pickle_vectorized_sentences(sentences):
-    with open('vectorized_sentences.pickle', 'wb') as handle:
+def pickle_vectorized_sentences(model_name, sentences):
+    with open(model_name+'_'+ 'vectorized_sentences.pickle', 'wb') as handle:
         pickle.dump(sentences, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-def load_vectorized_sentences():
-    with open('vectorized_sentences.pickle', 'rb') as handle:
+def load_vectorized_sentences(model_name):
+    with open(model_name+'_'+ 'vectorized_sentences.pickle', 'rb') as handle:
         sentences = pickle.load(handle)
     return sentences
 
@@ -118,8 +117,8 @@ def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectoriz
 
     return epochs, history, model
 
-def save_model_to_file(model):
-    return model.save("chat_model")
+def save_model_to_file(model, model_name):
+    model.save(model_name)
 
 def pickle_data(model_name, rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
 
@@ -164,7 +163,7 @@ def load_pickles(model_name):
 
     return rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes
 
-def build_trainingdata():
+def build_trainingdata(intents_file):
     rdict, intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
 
