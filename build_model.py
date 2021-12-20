@@ -102,9 +102,9 @@ def vectorize_all_sentences(training_sentences):
     return ps
 
 
-def __build_vectorized_model(num_classes,padded_sequences,training_labels):
-    epochs = 25
-    max_len = padded_sequences.shape[1]
+def __build_vectorized_model(epochs,num_classes, training_labels_encoded, vectorized_sentences):
+    epochs = epochs
+    max_len = vectorized_sentences.shape[1]
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
     model.add(Dense(16, activation='relu'))
@@ -114,14 +114,14 @@ def __build_vectorized_model(num_classes,padded_sequences,training_labels):
     
     model.summary()
 
-    history = model.fit(padded_sequences, np.array(training_labels), epochs=epochs, verbose=1)
+    history = model.fit(vectorized_sentences, np.array(training_labels_encoded), epochs=epochs, verbose=1)
 
     return epochs, history, model
 
 def __save_model_to_file(model):
     return model.save("chat_model")
 
-def pickle_data(rdict, labels, lbl_encoder, responses, training_labels, num_classes, max_length):
+def pickle_data(rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
 
     with open('rdict.pickle', 'wb') as ecn_file:
         pickle.dump(rdict, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -135,16 +135,15 @@ def pickle_data(rdict, labels, lbl_encoder, responses, training_labels, num_clas
     with open('responses.pickle', 'wb') as ecn_file:
         pickle.dump(responses, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
    
-    with open('training_labels.pickle', 'wb') as ecn_file:
-        pickle.dump(training_labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
+    with open('training_labels_encoded.pickle', 'wb') as ecn_file:
+        pickle.dump(training_labels_encoded, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
    
     with open('num_classes.pickle', 'wb') as ecn_file:
         pickle.dump(num_classes, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
-    with open('max_length.pickle', 'wb') as ecn_file:
-        pickle.dump(max_length, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 def load_pickles():
+
 
     with open('rdict.pickle', 'rb') as enc:
         rdict = pickle.load(enc)
@@ -164,29 +163,32 @@ def load_pickles():
     with open('num_classes.pickle', 'rb') as enc:
         num_classes = pickle.load(enc)
 
-    with open('max_length.pickle', 'rb') as enc:
-        max_length = pickle.load(enc)
+    return rdict, labels, lbl_encoder, responses, training_labels, num_classes
 
-    return rdict, labels, lbl_encoder, responses, training_labels, num_classes, max_length
-
-def build_B():
-
+def build_trainingdata():
     rdict, intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)
     lbl_encoder, training_labels_encoded = __label_encoder(training_labels)
-    vectorized_sentences = load_vectorized_sentences()
-    max_length = vectorized_sentences.shape[1]
 
-    epochs, history, model = __build_vectorized_model(num_classes,vectorized_sentences,training_labels_encoded)
-    
+    return rdict, intent, labels, num_classes, responses, training_labels, training_sentences,lbl_encoder, training_labels_encoded
+
+def pickle_trainingdata(rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
     pickle_data(rdict = rdict, labels = labels, lbl_encoder = lbl_encoder, 
                 responses = responses, training_labels = training_labels_encoded, 
-                num_classes = num_classes,max_length = max_length)
-    #__save_model_to_file(model)
+                num_classes = num_classes)
+                
 
 
-if __name__ == "__main__":
+#%%
+vectorize_all_sentences
+#%%
 
+rdict, intent, labels, num_classes, responses, training_labels, training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata()
+pickle_trainingdata(rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
 
-    print("Building Model")
-    build_B()
-    print("Built")
+rdict, labels, lbl_encoder, responses, training_labels, num_classes = load_pickles()
+vectorized_sentences = load_vectorized_sentences()
+
+epochs, history, model = __build_vectorized_model(25,num_classes,training_labels_encoded,vectorized_sentences)
+__save_model_to_file(model)
+
+print("Built")
