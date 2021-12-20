@@ -11,20 +11,12 @@ import random
 import pickle
 
 import build_model
-from build_model import vectorize_input
+from build_model import vectorize_all_sentences
 from build_model import load_pickles
 
-def build_data_dictionary(wdata):
-    dit = {}
-    for i in wdata['intents']:
-        g = i
 
-with open("intents.json") as file:
-    data = json.load(file)
-    build_data_dictionary(data)
-
-def vectorize_input(inp):
-    p = build_model.vectorize_input( inp )
+def vectorize_input_pythonqa(inp):
+    p = build_model.vectorize_all_sentences( [inp] )
     return p
 
 def chat():
@@ -37,7 +29,7 @@ def chat():
         if inp.lower() == "quit":
             break
 
-        inp_v = vectorize_input(inp)
+        inp_v = vectorize_input_pythonqa(inp)
         result = model.predict(inp_v)
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
 
