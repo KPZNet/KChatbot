@@ -102,7 +102,7 @@ def vectorize_all_sentences(training_sentences):
     return ps
 
 
-def __build_vectorized_model(epochs,num_classes, training_labels_encoded, vectorized_sentences):
+def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectorized_sentences):
     epochs = epochs
     max_len = vectorized_sentences.shape[1]
     model = Sequential()
@@ -118,7 +118,7 @@ def __build_vectorized_model(epochs,num_classes, training_labels_encoded, vector
 
     return epochs, history, model
 
-def __save_model_to_file(model):
+def save_model_to_file(model):
     return model.save("chat_model")
 
 def pickle_data(rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
