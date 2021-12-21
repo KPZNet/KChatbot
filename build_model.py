@@ -17,6 +17,11 @@ from gensim.models import KeyedVectors
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
+class creply:
+    def __init__(self, resp, patt, tg):
+        self.responses = resp
+        self.patterns = patt
+        self.tag = tg
 
 def cosine(u, v):
     return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
@@ -38,7 +43,9 @@ def __readin_intensions(tfile):
             training_sentences.append(pattern)
             training_labels.append(intent['tag'])
         responses.append(intent['responses'])
-        rdict[intent['tag']] = intent['responses']
+
+        rpl = creply(intent['responses'], intent['patterns'], intent['tag'] )
+        rdict[intent['tag']] = rpl
         
         if intent['tag'] not in labels:
             labels.append(intent['tag'])
@@ -61,14 +68,15 @@ def load_vectorized_sentences(model_name):
         sentences = pickle.load(handle)
     return sentences
 
-def convert_to_ndarr(ps):
+def convert_to_ndarr(ps, verbose = 0):
     max_len = len( ps[0] )
     l = len(ps)
     array_2d = np.ndarray((len(ps), max_len))
     
     for x in range(0, array_2d.shape[0]):
-        if x % 100 == 0:
-            print("Converted {0}/{1}".format(x, l))
+        if verbose > 0:
+            if x % 100 == 0:
+                print("Converted {0}/{1}".format(x, l))
     
         for y in range(0, array_2d.shape[1]):
             array_2d[x][y] = ps[x][y]
@@ -83,15 +91,16 @@ def vectorize_input(inp):
     ps = convert_to_ndarr(ps)
     return ps
 
-def vectorize_all_sentences(training_sentences):
+def vectorize_all_sentences(training_sentences, verbose = 0):
     l = len(training_sentences)
     i = 0
     ps = []
 
     for s in training_sentences:
-        if i % 10 == 0:
-            print("Vectorized {0} / {1} sentences".format(i, l))
-        i += 1
+        if verbose > 0:
+            if i % 10 == 0:
+                print("Vectorized {0} / {1} sentences".format(i, l))
+            i += 1
 
         p = sbert_model.encode([s])[0]
         ps.append(p)

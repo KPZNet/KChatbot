@@ -20,8 +20,9 @@ def vectorize_input_pythonqa(inp):
     return p
 
 def chat(model_name):
-    model = keras.models.load_model(model_name+'NNModel')
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(model_name)
+    mdir = model_name+'ChatModel\\'
+    model = keras.models.load_model(mdir+model_name+'NNModel')
+    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(mdir+model_name)
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
@@ -32,13 +33,19 @@ def chat(model_name):
         inp_v = vectorize_input_pythonqa(inp)
         result = model.predict(inp_v)
         m = np.argmax(result)
+        prob = result[0,m]
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
 
         t = tag[0]
-        c = rdict[t]
+        rd = rdict[t]
+        c = rd.responses
+        patterns = rd.patterns
         if len(c) == 0:
             print("chatbot does not understand")
         else:
+            print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
+            print(Fore.LIGHTMAGENTA_EX + "\tPropability:" + Style.RESET_ALL , prob)
+            print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
             print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
