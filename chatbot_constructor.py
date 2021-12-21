@@ -7,8 +7,8 @@ print("Done Imports")
 def build_trainer(intents_file, model_name):
     rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
     pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
-    vectorized_sentences = vectorize_all_sentences(training_sentences)
-    pickle_vectorized_sentences(model_name, vectorized_sentences)
+    #vectorized_sentences = vectorize_all_sentences(training_sentences)
+    #pickle_vectorized_sentences(model_name, vectorized_sentences)
     print("Done encoding AND pickled")
 
 #%%
@@ -20,10 +20,10 @@ def build_modeler(model_name, epochs):
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
-model_name = 'chatter_boxQA'
-intents_file = 'intents.json'
+model_name = 'pythonQA'
+intents_file = 'intents_qa.json'
 build_trainer(intents_file, model_name = model_name)
-build_modeler(model_name,500)
+build_modeler(model_name,5)
 print("Built!")
 
 start_chat(model_name)
