@@ -134,43 +134,18 @@ def pickle_data(model_name, rdict, labels, lbl_encoder, responses, training_labe
     with open(model_name+'_'+ 'rdict.pickle', 'wb') as ecn_file:
         pickle.dump(rdict, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
-    with open(model_name+'_'+ 'labels.pickle', 'wb') as ecn_file:
-        pickle.dump(labels, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-
     with open(model_name+'_'+ 'label_encoder.pickle', 'wb') as ecn_file:
         pickle.dump(lbl_encoder, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-
-    with open(model_name+'_'+ 'responses.pickle', 'wb') as ecn_file:
-        pickle.dump(responses, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-   
-    with open(model_name+'_'+ 'training_labels_encoded.pickle', 'wb') as ecn_file:
-        pickle.dump(training_labels_encoded, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-   
-    with open(model_name+'_'+ 'num_classes.pickle', 'wb') as ecn_file:
-        pickle.dump(num_classes, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-
 
 def load_pickles(model_name):
 
     with open(model_name+'_'+ 'rdict.pickle', 'rb') as enc:
         rdict = pickle.load(enc)
-
-    with open(model_name+'_'+ 'labels.pickle', 'rb') as enc:
-        labels = pickle.load(enc)
  
     with open(model_name+'_'+ 'label_encoder.pickle', 'rb') as enc:
         lbl_encoder = pickle.load(enc)
 
-    with open(model_name+'_'+ 'responses.pickle', 'rb') as enc:
-        responses = pickle.load(enc)
-
-    with open(model_name+'_'+ 'training_labels_encoded.pickle', 'rb') as enc:
-        training_labels_encoded = pickle.load(enc)
-
-    with open(model_name+'_'+ 'num_classes.pickle', 'rb') as enc:
-        num_classes = pickle.load(enc)
-
-    return rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes
+    return rdict, lbl_encoder
 
 def build_trainingdata(intents_file):
     rdict, intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)

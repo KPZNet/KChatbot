@@ -22,7 +22,7 @@ def vectorize_input_pythonqa(inp):
 def chat(model_name):
     mdir = model_name+'ChatModel\\'
     model = keras.models.load_model(mdir+model_name+'NNModel')
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(mdir+model_name)
+    rdict, lbl_encoder = load_pickles(mdir+model_name)
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")

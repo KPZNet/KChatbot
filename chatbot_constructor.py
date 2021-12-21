@@ -1,6 +1,9 @@
 
 from build_model import *
 from databot import start_chat
+
+import os
+
 print("Done Imports")
 
 def build_trainer(intents_file, model_name):
@@ -18,10 +21,42 @@ def build_modeler(model_name, epochs):
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
-model_name = 'conversationQA'
-intents_file = 'intents.json'
+
+def deploy_model(model_name):
+    mdir = model_name+'ChatModel\\'
+    
+    fstr = 'mkdir '+mdir
+    os.system(fstr)
+
+    filename = model_name+'_vectorized_sentences.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'_rdict.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'_label_encoder.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'NNModel'
+    mdirm = mdir+'\\'+filename
+    fstr = 'mkdir '+mdirm
+    os.system(fstr)
+    fstr = 'xcopy /E /H /Y {0} {1}'.format(filename, mdirm)
+    os.system(fstr)
+
+    print('Model Deployed')
+
+model_name = 'databot'
+
+
+intents_file = 'intents_databot.json'
 #build_trainer(intents_file, model_name = model_name)
-#build_modeler(model_name, 500)
+#build_modeler(model_name, 50)
+deploy_model(model_name)
 print("Built!")
+
 
 start_chat(model_name)
