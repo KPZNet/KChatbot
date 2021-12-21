@@ -40,6 +40,22 @@ def deploy_model(model_name):
     fstr = 'copy {0} {1}'.format(filename, mdir)
     os.system(fstr)
 
+    filename = model_name+'_labels.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'_num_classes.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'_responses.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
+    filename = model_name+'_training_labels_encoded.pickle'
+    fstr = 'copy {0} {1}'.format(filename, mdir)
+    os.system(fstr)
+
     filename = model_name+'NNModel'
     mdirm = mdir+'\\'+filename
     fstr = 'mkdir '+mdirm
@@ -53,8 +69,8 @@ model_name = 'databot'
 
 
 intents_file = 'intents_databot.json'
-#build_trainer(intents_file, model_name = model_name)
-#build_modeler(model_name, 50)
+build_trainer(intents_file, model_name = model_name)
+build_modeler(model_name, 50)
 deploy_model(model_name)
 print("Built!")
 
