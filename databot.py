@@ -31,6 +31,7 @@ def chat(model_name):
 
         inp_v = vectorize_input_pythonqa(inp)
         result = model.predict(inp_v)
+        m = np.argmax(result)
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
 
         t = tag[0]
