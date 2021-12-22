@@ -25,6 +25,9 @@ def build_modeler(model_name, epochs):
 def deploy_model(model_name):
     mdir = model_name+'ChatModel\\'
     
+    fstr = 'rmdir /s /q '+mdir
+    os.system(fstr)
+
     fstr = 'mkdir '+mdir
     os.system(fstr)
 
