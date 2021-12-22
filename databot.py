@@ -69,7 +69,8 @@ def chat(model_name):
 
             if tag == 'opendata':
                 bm = findwordmatch(inp,'file')
-                print('DATAFILE open request: MATCH {0}'.format(bm))
+                if bm is not None:
+                    print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
 
             print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
             print(Fore.LIGHTMAGENTA_EX + "\tPropability:" + Style.RESET_ALL , prob)
