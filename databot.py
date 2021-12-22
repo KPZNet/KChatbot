@@ -26,11 +26,10 @@ def compare(p1, p2):
     d = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
     return d
 
-def findwordmatch(sent, baseword):
+def findwordmatch(tsentence, baseword):
     p = -10.0
     bestguess = ''
-    tsent = word_tokenize(sent)
-    for s in tsent:
+    for s in tsentence:
         dprod = compare([baseword], [s])
         pnew = max(dprod, p)
         if( pnew > p):
@@ -38,9 +37,21 @@ def findwordmatch(sent, baseword):
             p = pnew
     return bestguess
 
+def getdatafile(sentence):
+    tsent = word_tokenize(sentence)
+    subs = '.csv'
+    res = list(filter(lambda x: subs in x, tsent))
+    if len(res) == 0:
+        subs = '.dat'
+        res = list(filter(lambda x: subs in x, tsent))
+    return res
+
 def vectorize_input_pythonqa(inp):
     p = build_model.vectorize_all_sentences( [inp] )
     return p
+
+lastChat = ''
+dataFile = None
 
 def chat(model_name):
     mdir = model_name+'ChatModel\\'
@@ -68,7 +79,8 @@ def chat(model_name):
         else:
 
             if tag == 'opendata':
-                bm = findwordmatch(inp,'file')
+                bm = getdatafile(inp)
+
                 if bm is not None:
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
 

@@ -391,3 +391,6 @@ PythonPack
 *.vec
 *.txt
 *.zip
+*.scrubbed
+*.jsonout
+

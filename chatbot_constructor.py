@@ -72,9 +72,9 @@ model_name = 'databot'
 
 
 intents_file = 'intents_databot.json'
-#build_trainer(intents_file, model_name = model_name)
-#build_modeler(model_name, 50)
-#deploy_model(model_name)
+build_trainer(intents_file, model_name = model_name)
+build_modeler(model_name, 50)
+deploy_model(model_name)
 print("Built!")
 
 

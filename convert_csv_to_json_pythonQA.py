@@ -1,4 +1,4 @@
-#%%
+
 import time as time
 import numpy as np
 import pandas as pd
@@ -114,6 +114,38 @@ def convert_qa_to_json(max_sets, num_augmented_answers):
     csv_to_json(cQ, cA, max_sets, num_augmented_answers, jsonFilePath)
     print("Completed intents_qa JSON file")
 
+# ---------------------------------
+def scrub_sentence(x):
+    x= BeautifulSoup(x, 'html.parser').get_text()
+    x= clean_text(x)
+    x= expand_contractions(x)
+    x = x.lower()
+    x= remove_non_alphabetical_character(x)
+    #x= remove_single_letter(x)
+    #x= remove_stopwords(x)
+    x= remove_by_tag(x, adjective_tag_list)
+    x= lemmatize_text(x)
+    return x
+
+def scrub_jsonfile(tfile):
+    data = None
+    with open(tfile, "r") as file:
+        data = json.load(file)
+        
+        for intent in data['intents']:
+            plistscrubbed = []
+            plistorig = []
+            for pattern in intent['patterns']:
+                plistorig.append(pattern)
+                p = scrub_sentence(pattern)
+                plistscrubbed.append(p)
+            intent['patterns'] = plistscrubbed
+            intent['patterns_orig'] = plistorig
+
+    tfile += '.scrubbed'
+    with open(tfile, 'w', encoding='utf-8') as jsonf:
+        jsonString = json.dumps(data, indent=4)
+        jsonf.write(jsonString)
 
 # ---------------------------------
 
@@ -292,8 +324,14 @@ def clean_up(time_cut_Q, time_cut_A, max_records_Q = 100000000, max_records_A = 
     print("Execution Time {0:.4f} seconds".format(end-start))
     print("COMPLETE scrubbing")
 
-#%%
-clean_up('2016-09-01','2016-08-01')
 
-#%%
-convert_qa_to_json(10000, 40)
+
+#clean_up('2016-09-01','2016-08-01')
+#convert_qa_to_json(10000, 40)
+
+scrub_jsonfile('intents_databot.json')
+print("Done Scrubbing JSON")
+
+
+
+
