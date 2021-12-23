@@ -14,11 +14,11 @@ import build_model
 from build_model import vectorize_all_sentences
 from build_model import load_pickles
 
+from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
-from nltk.tokenize import word_tokenize
-  
+from nltk.tokenize import word_tokenize  
 
 def compare(p1, p2):
     u = sbert_model.encode(p1)[0]
@@ -64,7 +64,8 @@ def chat(model_name):
         if inp.lower() == "quit":
             break
 
-        inp_v = vectorize_input_pythonqa(inp)
+        inp_scb = scrub_sentence_min(inp)
+        inp_v = vectorize_input_pythonqa(inp_scb)
         result = model.predict(inp_v)
         m = np.argmax(result)
         prob = result[0,m]
@@ -84,6 +85,7 @@ def chat(model_name):
                 if bm is not None:
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
 
+            print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
             print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
             print(Fore.LIGHTMAGENTA_EX + "\tPropability:" + Style.RESET_ALL , prob)
             print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])

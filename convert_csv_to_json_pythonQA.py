@@ -41,10 +41,26 @@ charac = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~0123456789'
 stop_words = set(stopwords.words("english"))
 adjective_tag_list = set(['JJ','JJR', 'JJS', 'RBR', 'RBS']) # List of Adjective's tag from nltk package
 
+def scrub_sentence_all(x):
+    x= BeautifulSoup(x, 'html.parser').get_text()
+    x= clean_text(x)
+    x= expand_contractions(x)
+    x = x.lower()
+    x= remove_non_alphabetical_character(x)
+    x= remove_single_letter(x)
+    x= remove_stopwords(x)
+    x= remove_by_tag(x, adjective_tag_list)
+    x= lemmatize_text(x)
+    return x
+
+def scrub_sentence_min(x):
+    x= BeautifulSoup(x, 'html.parser').get_text()
+    x= clean_text(x)
+    x= expand_contractions(x)
+    return x
 
 def get_randos(text, numrandos):
     at = []
-    at.append(text)
     aug = naw.SynonymAug(aug_src='wordnet')
     for i in range(numrandos):
         t = aug.augment(text)
@@ -90,14 +106,19 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
                 id = row['Id']
                 rs = find_parent( id , answersDict)
                 jtag = row["Title"]
-                patterns = get_randos(jtag, augs)
-                jpatterns = patterns #row["Body"]
-                #jtag_clean = row["Title_clean"]
-                #jpatterns_clean = row["Body_clean"]
+                jtagscrubbed = scrub_sentence_min(jtag)
+                patterns = get_randos(jtagscrubbed, augs)
+                patterns.insert(0,jtagscrubbed)
+                patterns.insert(0,jtag)
                 jresponses = [b['Body'] for b in rs]
-                jrec = {'tag':id, 'patterns':jpatterns ,'responses':jresponses}
-                jsonArray.append(jrec)
-                irow += 1
+                if len(jresponses) > 0:
+                    jresponses_cleaned = []
+                    for j in jresponses:
+                        jsc = scrub_sentence_min(j)
+                        jresponses_cleaned.append(jsc)
+                    jrec = {'tag':id, 'patterns':patterns ,'responses':jresponses_cleaned}
+                    jsonArray.append(jrec)
+                    irow += 1
                 if irow >= total_sets:
                     break
 
@@ -299,18 +320,12 @@ def get_scrubbed_questions(filename, time_cut, max_sets):
     df = readinquestions(max_sets, time_cut) 
     dfl = len(df)
     print("Read in {0} QUESTIONS".format(dfl))
-    df['Body_clean'] = scrub_text_loop_all(filename, df['Body'])
-    df['Title_clean'] = scrub_text_loop_all(filename, df['Title'])
-    df['Body'] = scrub_text_loop_minimal(filename, df['Body'])
-    df['Title'] = scrub_text_loop_minimal(filename, df['Title'])
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 def get_scrubbed_answers(filename, time_cut, max_sets):
     df = readinanswers(max_sets,time_cut) 
     dfl = len(df)
     print("Read in {0} ANSWERS".format(dfl))
-    b = scrub_text_loop_minimal(filename, df['Body'])
-    df['Body'] = b
     df.to_csv(filename, encoding='utf-8', errors='surrogatepass')
 
 def clean_up(time_cut_Q, time_cut_A, max_records_Q = 100000000, max_records_A = 100000000):
@@ -322,15 +337,16 @@ def clean_up(time_cut_Q, time_cut_A, max_records_Q = 100000000, max_records_A = 
     end = time.time()
 
     print("Execution Time {0:.4f} seconds".format(end-start))
-    print("COMPLETE scrubbing")
+    print("COMPLETE filtering CSVs to date range")
+
+def runner():
+    clean_up('2016-09-01','2016-08-01')
+    convert_qa_to_json(10000, 40)
+    
+    #scrub_jsonfile('intents_databot.json')
+    print("Done building clean JSON")
 
 
-
-#clean_up('2016-09-01','2016-08-01')
-#convert_qa_to_json(10000, 40)
-
-scrub_jsonfile('intents_databot.json')
-print("Done Scrubbing JSON")
 
 
 

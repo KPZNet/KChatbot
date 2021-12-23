@@ -98,7 +98,7 @@ def vectorize_all_sentences(training_sentences, verbose = 0):
 
     for s in training_sentences:
         if verbose > 0:
-            if i % 10 == 0:
+            if i % 100 == 0:
                 print("Vectorized {0} / {1} sentences".format(i, l))
             i += 1
 
