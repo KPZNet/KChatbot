@@ -261,7 +261,6 @@ def readinanswers(rows_to_read, date_cut):
     df.info()
     return df
 
-
 def runner():
     cQ = "stats_ans.csv"
     cA = "stats_qus.csv"
