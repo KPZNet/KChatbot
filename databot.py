@@ -19,8 +19,8 @@ from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 from nltk.tokenize import word_tokenize  
+
 from data_preprocessing import scrub_sentence_min
-from build_model import creply
 
 def compare(p1, p2):
     u = sbert_model.encode(p1)[0]
@@ -58,7 +58,7 @@ dataFile = None
 def chat(model_name):
     mdir = model_name+'ChatModel\\'
     model = keras.models.load_model(mdir+model_name+'NNModel')
-    rdict, labels, lbl_encoder, responses, training_labels_encoded = load_pickles(mdir+model_name)
+    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(mdir+model_name)
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
