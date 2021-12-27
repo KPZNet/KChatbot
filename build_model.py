@@ -111,8 +111,9 @@ def vectorize_all_sentences(training_sentences, verbose = 0):
     return ps
 
 
-def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectorized_sentences):
+def build_vectorized_model(epochs, training_labels_encoded, vectorized_sentences):
     epochs = epochs
+    num_classes = len(training_labels_encoded)
     max_len = vectorized_sentences.shape[1]
     model = Sequential()
     model.add(Dense(16, input_dim=max_len))
@@ -130,7 +131,7 @@ def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectoriz
 def save_model_to_file(model, model_name):
     model.save(model_name)
 
-def pickle_data(model_name, rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
+def pickle_data(model_name, rdict, labels, lbl_encoder, responses, training_labels_encoded):
 
     with open(model_name+'_'+ 'rdict.pickle', 'wb') as ecn_file:
         pickle.dump(rdict, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
@@ -146,9 +147,6 @@ def pickle_data(model_name, rdict, labels, lbl_encoder, responses, training_labe
    
     with open(model_name+'_'+ 'training_labels_encoded.pickle', 'wb') as ecn_file:
         pickle.dump(training_labels_encoded, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
-   
-    with open(model_name+'_'+ 'num_classes.pickle', 'wb') as ecn_file:
-        pickle.dump(num_classes, ecn_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def load_pickles(model_name):
@@ -168,10 +166,7 @@ def load_pickles(model_name):
     with open(model_name+'_'+ 'training_labels_encoded.pickle', 'rb') as enc:
         training_labels_encoded = pickle.load(enc)
 
-    with open(model_name+'_'+ 'num_classes.pickle', 'rb') as enc:
-        num_classes = pickle.load(enc)
-
-    return rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes
+    return rdict, labels, lbl_encoder, responses, training_labels_encoded
 
 def build_trainingdata(intents_file):
     rdict, intent, labels, num_classes, responses, training_labels, training_sentences = __readin_intensions(intents_file)
@@ -181,8 +176,7 @@ def build_trainingdata(intents_file):
 
 def pickle_trainingdata(model_name, rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes):
     pickle_data(model_name = model_name,rdict = rdict, labels = labels, lbl_encoder = lbl_encoder,
-                responses = responses, training_labels_encoded = training_labels_encoded, 
-                num_classes = num_classes)
+                responses = responses, training_labels_encoded = training_labels_encoded)
                 
 
 def deploy_model(model_name):
@@ -207,10 +201,6 @@ def deploy_model(model_name):
     os.system(fstr)
 
     filename = model_name+'_labels.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_num_classes.pickle'
     fstr = 'copy {0} {1}'.format(filename, mdir)
     os.system(fstr)
 
@@ -240,10 +230,10 @@ def build_training_data(intents_file, model_name, vectorize = False):
     print("Done encoding AND pickled")
 
 def build_modeler(model_name, epochs):
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(model_name)
+    rdict, labels, lbl_encoder, responses, training_labels_encoded = load_pickles(model_name)
     vectorized_sentences = load_vectorized_sentences(model_name)
     
-    epochs, history, model = build_vectorized_model(epochs ,num_classes,training_labels_encoded,vectorized_sentences)
+    epochs, history, model = build_vectorized_model(epochs,training_labels_encoded,vectorized_sentences)
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
