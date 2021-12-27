@@ -22,6 +22,8 @@ from nltk.tokenize import word_tokenize
 
 from data_preprocessing import scrub_sentence_min
 
+from build_model import creply
+
 def compare(p1, p2):
     u = sbert_model.encode(p1)[0]
     v = sbert_model.encode(p2)[0]

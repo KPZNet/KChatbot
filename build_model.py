@@ -253,7 +253,7 @@ def main():
 
     #build_training_data(intents_file, model_name = model_name, vectorize = True)
     #build_modeler(model_name, 50)
-    deploy_model(model_name)
+    #deploy_model(model_name)
     print("Built!")
 
     #start_chat(model_name)
