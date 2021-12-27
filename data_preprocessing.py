@@ -181,8 +181,8 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
             irow = 0
             for row in csvReaderQ:
 
-                if irow % 100 == 0:
-                    print("Processing row {0} / {1} with {2} augments".format(irow, total_sets, augs))
+                if irow % 10 == 0:
+                    print("Processing ROW {0} / {1} with {2} augments".format(irow, total_sets, augs))
 
                 id = row['Id']
                 rs = find_parent( id , answersDict)
@@ -275,8 +275,6 @@ def runner():
     cQ = "stats_a.csv"
     cA = "stats_q.csv"
     jsonFilePath = "StatsQA.json"
-    #clean_up(Ques, Ans, '2016-09-01','2016-08-01')
-    #convert_qa_to_json(Intent, Ques, Ans, 10000, 40)
     csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
     
     #scrub_jsonfile('intents_databot.json')
@@ -285,6 +283,8 @@ def runner():
 def main():
     runner()
 
+if __name__ == "__main__":
+    main()
 
 
 

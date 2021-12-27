@@ -44,4 +44,8 @@ def StatsExchangeXMLtoCSV():
     dfA.to_csv('stats_q.csv')
     dfQ.to_csv('stats_a.csv')
 
-#StatsExchangeXMLtoCSV()
+def main():
+    StatsExchangeXMLtoCSV()
+
+if __name__ == "__main__":
+    main()

@@ -77,4 +77,7 @@ def main():
     #deploy_model(model_name)
     print("Built!")
 
-    start_chat(model_name)
+    #start_chat(model_name)
+
+if __name__ == "__main__":
+    main()

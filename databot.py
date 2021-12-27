@@ -98,6 +98,14 @@ def start_chat(model_name):
     print(Fore.YELLOW + "Welcome to KBot data Analyst!" + Style.RESET_ALL)
     chat(model_name)
 
+def main():
+    model_name = 'statsQA'
+    start_chat(model_name)
+
+if __name__ == "__main__":
+    main()
+
+
 
 
 

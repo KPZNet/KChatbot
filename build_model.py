@@ -1,4 +1,5 @@
 import json 
+import os
 import numpy as np 
 import tensorflow as tf
 from tensorflow import keras
@@ -250,9 +251,12 @@ def main():
     model_name = 'statsQA'
     intents_file = "StatsQA.json"
 
-    #build_trainer(intents_file, model_name = model_name)
+    #build_training_data(intents_file, model_name = model_name, vectorize = True)
     #build_modeler(model_name, 50)
-    #deploy_model(model_name)
+    deploy_model(model_name)
     print("Built!")
 
-    start_chat(model_name)
+    #start_chat(model_name)
+
+if __name__ == "__main__":
+    main()
