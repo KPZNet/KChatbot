@@ -272,8 +272,8 @@ def readinanswers(rows_to_read, date_cut):
     return df
 
 def runner():
-    cQ = "stats_ans.csv"
-    cA = "stats_qus.csv"
+    cQ = "stats_a.csv"
+    cA = "stats_q.csv"
     jsonFilePath = "StatsQA.json"
     #clean_up(Ques, Ans, '2016-09-01','2016-08-01')
     #convert_qa_to_json(Intent, Ques, Ans, 10000, 40)

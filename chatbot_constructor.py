@@ -69,8 +69,8 @@ def build_modeler(model_name, epochs):
 
 
 def main():
-    model_name = 'pythonQA'
-    intents_file = 'intents_qa.json'
+    model_name = 'statsQA'
+    intents_file = 'statsQA.json'
 
     #build_trainer(intents_file, model_name = model_name)
     #build_modeler(model_name, 50)

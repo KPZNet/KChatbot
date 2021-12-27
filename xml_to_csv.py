@@ -41,7 +41,7 @@ def StatsExchangeXMLtoCSV():
     dfA = pd.DataFrame(rowsA, columns=colsA)
     
     # Writing dataframe to csv
-    dfA.to_csv('stats_qus.csv')
-    dfQ.to_csv('stats_ans.csv')
+    dfA.to_csv('stats_q.csv')
+    dfQ.to_csv('stats_a.csv')
 
 #StatsExchangeXMLtoCSV()

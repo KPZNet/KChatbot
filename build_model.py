@@ -230,11 +230,12 @@ def deploy_model(model_name):
 
     print('Model Deployed')
 
-def build_trainer(intents_file, model_name):
+def build_training_data(intents_file, model_name, vectorize = False):
     rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
     pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
-    vectorized_sentences = vectorize_all_sentences(training_sentences, verbose = 1)
-    pickle_vectorized_sentences(model_name, vectorized_sentences)
+    if vectorize == True:
+        vectorized_sentences = vectorize_all_sentences(training_sentences, verbose = 1)
+        pickle_vectorized_sentences(model_name, vectorized_sentences)
     print("Done encoding AND pickled")
 
 def build_modeler(model_name, epochs):
@@ -245,10 +246,9 @@ def build_modeler(model_name, epochs):
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
-
 def main():
-    model_name = 'pythonQA'
-    intents_file = 'intents_qa.json'
+    model_name = 'statsQA'
+    intents_file = "StatsQA.json"
 
     #build_trainer(intents_file, model_name = model_name)
     #build_modeler(model_name, 50)
