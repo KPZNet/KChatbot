@@ -6,22 +6,6 @@ import os
 
 print("Done Imports")
 
-def build_trainer(intents_file, model_name):
-    rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
-    pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
-    vectorized_sentences = vectorize_all_sentences(training_sentences, verbose = 1)
-    pickle_vectorized_sentences(model_name, vectorized_sentences)
-    print("Done encoding AND pickled")
-
-def build_modeler(model_name, epochs):
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(model_name)
-    vectorized_sentences = load_vectorized_sentences(model_name)
-    
-    epochs, history, model = build_vectorized_model(epochs ,num_classes,training_labels_encoded,vectorized_sentences)
-    save_model_to_file(model, model_name+'NNModel')
-    return vectorized_sentences
-
-
 def deploy_model(model_name):
     mdir = model_name+'ChatModel\\'
     
@@ -68,12 +52,29 @@ def deploy_model(model_name):
 
     print('Model Deployed')
 
-model_name = 'pythonQA'
-intents_file = 'intents_qa.json'
+def build_trainer(intents_file, model_name):
+    rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
+    pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
+    vectorized_sentences = vectorize_all_sentences(training_sentences, verbose = 1)
+    pickle_vectorized_sentences(model_name, vectorized_sentences)
+    print("Done encoding AND pickled")
 
-#build_trainer(intents_file, model_name = model_name)
-#build_modeler(model_name, 50)
-#deploy_model(model_name)
-print("Built!")
+def build_modeler(model_name, epochs):
+    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(model_name)
+    vectorized_sentences = load_vectorized_sentences(model_name)
+    
+    epochs, history, model = build_vectorized_model(epochs ,num_classes,training_labels_encoded,vectorized_sentences)
+    save_model_to_file(model, model_name+'NNModel')
+    return vectorized_sentences
 
-start_chat(model_name)
+
+def main():
+    model_name = 'pythonQA'
+    intents_file = 'intents_qa.json'
+
+    #build_trainer(intents_file, model_name = model_name)
+    #build_modeler(model_name, 50)
+    #deploy_model(model_name)
+    print("Built!")
+
+    start_chat(model_name)

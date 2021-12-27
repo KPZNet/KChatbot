@@ -130,6 +130,16 @@ def scrub_sentence_min(x):
     x= expand_contractions(x)
     return x
 
+def scrub_sentence_mid(x):
+    x= BeautifulSoup(x, 'html.parser').get_text()
+    x= clean_text(x)
+    x= remove_punctuation_and_number(x)
+    x= expand_contractions(x)
+    #x= remove_non_alphabetical_character(x)
+    x= remove_single_letter(x)
+    x= autocorrect(x)
+    return x
+
 def get_randos(text, numrandos):
     at = []
     aug = naw.SynonymAug(aug_src='wordnet')
@@ -177,7 +187,7 @@ def csv_to_json(cQ, cA, total_sets, augs, jsonFilePath):
                 id = row['Id']
                 rs = find_parent( id , answersDict)
                 jtag = row["Title"]
-                jtagscrubbed = scrub_sentence_min(jtag)
+                jtagscrubbed = scrub_sentence_mid(jtag)
                 patterns = get_randos(jtagscrubbed, augs)
                 patterns.insert(0,jtagscrubbed)
                 patterns.insert(0,jtag)
@@ -272,8 +282,8 @@ def runner():
     #scrub_jsonfile('intents_databot.json')
     print("Done building clean JSON")
 
-
-runner()
+def main():
+    runner()
 
 
 
