@@ -101,7 +101,7 @@ def start_chat(model_name):
     chat(model_name)
 
 def main():
-    model_name = 'statsQA'
+    model_name = 'statbotQA'
     start_chat(model_name)
 
 if __name__ == "__main__":
