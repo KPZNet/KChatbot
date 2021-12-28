@@ -57,6 +57,9 @@ def vectorize_input_pythonqa(inp):
 lastChat = ''
 dataFile = None
 
+def talk_statbot(inp):
+    pass
+
 def chat(model_name):
     mdir = model_name+'ChatModel\\'
     model = keras.models.load_model(mdir+model_name+'NNModel')
