@@ -56,14 +56,17 @@ def vectorize_input_pythonqa(inp):
 
 lastChat = ''
 dataFile = None
+f1 = None
 
-def talk_statbot(inp):
-    pass
 
-def chat(model_name):
-    mdir = model_name+'ChatModel\\'
-    model = keras.models.load_model(mdir+model_name+'NNModel')
-    rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes = load_pickles(mdir+model_name)
+def chat():
+
+    sb_model = keras.models.load_model('statbotQAChatModel\\statbotQANNModel')
+    sb_rdict, sb_labels, sb_lbl_encoder, sb_responses, sb_training_labels_encoded, sb_num_classes = load_pickles('statbotQAChatModel\\statbotQA')
+
+    stat_model = keras.models.load_model('statsQAChatModel\\statsQANNModel')
+    stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('statsQAChatModel\\statsQA')
+
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
@@ -73,13 +76,13 @@ def chat(model_name):
 
         inp_scb = scrub_sentence_min(inp)
         inp_v = vectorize_input_pythonqa(inp_scb)
-        result = model.predict(inp_v)
+        result = sb_model.predict(inp_v)
         m = np.argmax(result)
         prob = result[0,m]
-        tag = lbl_encoder.inverse_transform([np.argmax(result)])
+        tag = sb_lbl_encoder.inverse_transform([np.argmax(result)])
 
         t = tag[0]
-        rd = rdict[t]
+        rd = sb_rdict[t]
         c = rd.responses
         patterns = rd.patterns
         if len(c) == 0:
@@ -91,24 +94,24 @@ def chat(model_name):
 
                 if bm is not None:
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
+                else:
+                    f1 = open(bm)
+                    print("I opened the file {0} for you".format(bm))
+                    
 
             print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
             print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
-            print(Fore.LIGHTMAGENTA_EX + "\tPropability:" + Style.RESET_ALL , prob)
+            print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
             print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
             print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
-def start_chat(model_name):
+def start_chat():
     print(Fore.YELLOW + "Welcome to KBot data Analyst!" + Style.RESET_ALL)
-    chat(model_name)
-
-def main():
-    model_name = 'statbotQA'
-    start_chat(model_name)
+    chat()
 
 if __name__ == "__main__":
-    main()
+    start_chat()
 
 
 
