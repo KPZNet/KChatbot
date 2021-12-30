@@ -8,28 +8,14 @@ import colorama
 colorama.init()
 from colorama import Fore, Style, Back
 
-import random
-import pickle
-
-import build_model
-from build_model import vectorize_all_sentences
-from build_model import load_pickles
-
 from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer
 sbert_model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 from nltk.tokenize import word_tokenize  
-
 from data_preprocessing import scrub_sentence_min
 
-from build_model import creply
-
-def compare(p1, p2):
-    u = sbert_model.encode(p1)[0]
-    v = sbert_model.encode(p2)[0]
-    d = np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-    return d
+from statbot_lib import *
 
 def findwordmatch(tsentence, baseword):
     p = -10.0
@@ -52,7 +38,7 @@ def getdatafile(sentence):
     return res
 
 def vectorize_input_pythonqa(inp):
-    p = build_model.vectorize_all_sentences( [inp] )
+    p = vectorize_all_sentences( [inp] )
     return p
 
 lastChat = ''
