@@ -1,4 +1,5 @@
-import json 
+import json
+from logging import exception 
 import numpy as np
 from tensorflow import keras
 from sklearn.preprocessing import LabelEncoder
@@ -88,22 +89,28 @@ def chat():
         if len(c) == 0:
             print("chatbot does not understand")
         else:
+            print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
+            print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
+            print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
+            print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
+            print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
             if tag == 'opendata':
                 bm = getdatafile(inp)
 
                 if bm is not None:
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
+                    try:
+                        f1 = open(bm)
+                        print("I opened the file {0} for you".format(bm))
+                    except FileNotFoundError:
+                        print("I could not find that file, can you please try again")
+                    except Exception as e:
+                        print("Could NOT open file, not sure why, here was exception {0}".format(e))
                 else:
-                    f1 = open(bm)
-                    print("I opened the file {0} for you".format(bm))
+                    print("What file would you like to open?")
                     
-
-            print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
-            print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
-            print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
-            print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
-            print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
+                    
 
 
 def start_chat():
