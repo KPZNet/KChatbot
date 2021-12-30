@@ -231,52 +231,6 @@ def pickle_trainingdata(model_name, rdict, labels, lbl_encoder, responses, train
                 num_classes = num_classes)
                 
 
-def deploy_model(model_name):
-    mdir = model_name+'ChatModel\\'
-    
-    fstr = 'rmdir /s /q '+mdir
-    os.system(fstr)
-
-    fstr = 'mkdir '+mdir
-    os.system(fstr)
-
-    filename = model_name+'_vectorized_sentences.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_rdict.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_label_encoder.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_labels.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_num_classes.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_responses.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'_training_labels_encoded.pickle'
-    fstr = 'copy {0} {1}'.format(filename, mdir)
-    os.system(fstr)
-
-    filename = model_name+'NNModel'
-    mdirm = mdir+'\\'+filename
-    fstr = 'mkdir '+mdirm
-    os.system(fstr)
-    fstr = 'xcopy /E /H /Y {0} {1}'.format(filename, mdirm)
-    os.system(fstr)
-
-    print('Model Deployed')
-
 def build_training_data(intents_file, model_name, vectorize = False):
     rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
     pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
