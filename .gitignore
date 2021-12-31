@@ -372,6 +372,7 @@ workspace.code-workspace
 *.sln
 *.iml
 *.pyproj
+.spyproject
 
 #Model
 \variables

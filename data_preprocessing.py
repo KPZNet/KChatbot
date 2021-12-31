@@ -271,7 +271,7 @@ def readinanswers(rows_to_read, date_cut):
     df.info()
     return df
 
-def runner():
+def preprocess_statbot_csvs():
     cQ = "stats_a.csv"
     cA = "stats_q.csv"
     jsonFilePath = "StatsQA.json"
@@ -280,11 +280,9 @@ def runner():
     #scrub_jsonfile('intents_databot.json')
     print("Done building clean JSON")
 
-def main():
-    runner()
 
 if __name__ == "__main__":
-    main()
+    #preprocess_statbot_csvs()
 
 
 
