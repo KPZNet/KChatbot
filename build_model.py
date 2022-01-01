@@ -28,6 +28,7 @@ def __readin_intensions(tfile):
     for intent in data['intents']:
         for pattern in intent['patterns']:
             training_sentences.append(pattern)
+
             training_labels.append(intent['tag'])
         responses.append(intent['responses'])
 

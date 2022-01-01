@@ -282,6 +282,7 @@ def preprocess_statbot_csvs():
 
 
 if __name__ == "__main__":
+    pass
     #preprocess_statbot_csvs()
 
 

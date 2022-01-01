@@ -35,6 +35,10 @@ def getdatafile(sentence):
     if len(res) == 0:
         subs = '.dat'
         res = list(filter(lambda x: subs in x, tsent))
+        
+    if res is not None:
+        if len(res) >0:
+            res = res[0]
     return res
 
 def vectorize_input_pythonqa(inp):
@@ -44,6 +48,7 @@ def vectorize_input_pythonqa(inp):
 lastChat = ''
 dataFile = None
 f1 = None
+fileisopen = False
 
 
 def chat():
@@ -89,12 +94,18 @@ def chat():
                     try:
                         f1 = open(bm)
                         print("I opened the file {0} for you".format(bm))
+                        fileisopen = True
                     except FileNotFoundError:
                         print("I could not find that file, can you please try again")
                     except Exception as e:
                         print("Could NOT open file, not sure why, here was exception {0}".format(e))
                 else:
                     print("What file would you like to open?")
+            if tag == 'mean':
+                if fileisopen:
+                    print("mean is:XXX.XXX")
+                        
+                
                     
                     
 
