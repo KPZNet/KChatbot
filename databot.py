@@ -75,20 +75,22 @@ def chat():
         result = sb_model.predict(inp_v)
         m = np.argmax(result)
         prob = result[0,m]
-        tag = sb_lbl_encoder.inverse_transform([np.argmax(result)])
 
-        t = tag[0]
-        rd = sb_rdict[t]
-        c = rd.responses
-        patterns = rd.patterns
-        if len(c) == 0:
-            print("chatbot does not understand")
-        else:
-            print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
-            print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
-            print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
-            print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
-            print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
+        if prob >= 0.75:
+            tag = sb_lbl_encoder.inverse_transform([np.argmax(result)])
+            t = tag[0]
+            rd = sb_rdict[t]
+            c = rd.responses
+            patterns = rd.patterns
+            if len(c) == 0:
+                print("chatbot does not understand")
+            else:
+                print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
+                print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
+                print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
+                print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
+                print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
+
 
             if tag == 'opendata':
                 bm = getdatafile(inp)
@@ -113,7 +115,24 @@ def chat():
                 if fileisopen:
                     fdataset.plot.box(title="Box and whisker plot", grid=True)
                     plot.show()
-                    
+
+        else:
+            print("I searched Stats Exchange to find an answer for you, and here is what I found...")
+            print('')
+            result2 = stat_model.predict(inp_v)
+            m2 = np.argmax(result2)
+            prob2 = result2[0,m2]
+            tag2 = stat_lbl_encoder.inverse_transform([np.argmax(result2)])
+
+            t2 = tag2[0]
+            rd2 = stat_rdict[t2]
+            c2 = rd2.responses
+            patterns2 = rd2.patterns
+            print(Fore.LIGHTMAGENTA_EX + "\t\tScrubbed:" + Style.RESET_ALL , inp_scb)
+            print(Fore.LIGHTMAGENTA_EX + "\t\tTAG:" + Style.RESET_ALL , t2)
+            print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
+            print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
+            print(Fore.GREEN + "\t\tChatBot:" + Style.RESET_ALL , np.random.choice(c2))
                         
                 
                     
