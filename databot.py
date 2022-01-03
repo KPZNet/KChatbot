@@ -4,6 +4,9 @@ import numpy as np
 from tensorflow import keras
 from sklearn.preprocessing import LabelEncoder
 
+import pandas as pd
+import matplotlib.pyplot as plot
+
 import colorama 
 colorama.init()
 from colorama import Fore, Style, Back
@@ -48,6 +51,7 @@ def vectorize_input_pythonqa(inp):
 lastChat = ''
 dataFile = None
 f1 = None
+fdataset = None
 fileisopen = False
 
 
@@ -92,8 +96,12 @@ def chat():
                 if bm is not None:
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
                     try:
-                        f1 = open(bm)
+                        fdataset = pd.read_csv(bm)
                         print("I opened the file {0} for you".format(bm))
+                        print("Here is quick summary and view of the data\n\n")
+                        print('---------------')
+                        print(fdataset.head())
+                        print('---------------')
                         fileisopen = True
                     except FileNotFoundError:
                         print("I could not find that file, can you please try again")
@@ -103,7 +111,9 @@ def chat():
                     print("What file would you like to open?")
             if tag == 'mean':
                 if fileisopen:
-                    print("mean is:XXX.XXX")
+                    fdataset.plot.box(title="Box and whisker plot", grid=True)
+                    plot.show()
+                    
                         
                 
                     
