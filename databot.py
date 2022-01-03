@@ -115,6 +115,10 @@ def chat():
                 if fileisopen:
                     fdataset.plot.box(title="Box and whisker plot", grid=True)
                     plot.show()
+            if tag == 'histogram':
+                if fileisopen:
+                    fdataset.plot.hist(title="Histogram plot", grid=True)
+                    plot.show()
 
         else:
             print("I searched Stats Exchange to find an answer for you, and here is what I found...")
