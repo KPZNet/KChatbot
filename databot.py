@@ -119,6 +119,13 @@ def chat():
                 if fileisopen:
                     fdataset.plot.hist(title="Histogram plot", grid=True)
                     plot.show()
+            if tag == 'plot':
+                if fileisopen:
+                    fdataset.plot(title="Data plot", grid=True)
+                    plot.show()
+            if tag == 'standarddeviation':
+                if fileisopen:
+                    print( fdataset.std() )
 
         else:
             print("I searched Stats Exchange to find an answer for you, and here is what I found...")
