@@ -142,8 +142,8 @@
 				"sd"
 			],
 			"responses": [
-				"Here is the histogram plot",
-				"The histogram plot is"
+				"Here is the standard deviation",
+				"The STDV is"
 			]
 		},
 		{

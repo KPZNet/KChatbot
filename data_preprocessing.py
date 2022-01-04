@@ -215,7 +215,7 @@ def convert_qa_to_json(jsonFilePath, cQ, cA, max_sets, num_augmented_answers):
 
 # ---------------------------------
 
-def scrub_jsonfile(tfile):
+def scrub_jsonfile(tfile, randos=10):
     data = None
     with open(tfile, "r") as file:
         data = json.load(file)
@@ -226,7 +226,9 @@ def scrub_jsonfile(tfile):
             for pattern in intent['patterns']:
                 plistorig.append(pattern)
                 p = scrub_sentence_min(pattern)
+                added_rando_patterns = get_randos(p, randos)           
                 plistscrubbed.append(p)
+                plistscrubbed.append(added_rando_patterns)
             intent['patterns'] = plistscrubbed
             intent['patterns_orig'] = plistorig
 
