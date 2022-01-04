@@ -1,0 +1,162 @@
+{
+	"intents": [
+		{
+			"tag": "greeting",
+			"patterns": [ "Hi", "Hey", "Is anyone there?", "Hello", "Hay" ],
+			"responses": [ "Hello", "Hi", "Hi there" ]
+		},
+		{
+			"tag": "goodbye",
+			"patterns": [ "Bye", "See you later", "Goodbye" ],
+			"responses": [ "See you later", "Have a nice day", "Bye!" ]
+		},
+		{
+			"tag": "thanks",
+			"patterns": [ "Thanks", "Thank you", "That's helpful", "Thanks for the help" ],
+			"responses": [ "Happy to help!", "Any time!", "My pleasure", "You're most welcome!" ]
+		},
+		{
+			"tag": "about",
+			"patterns": [
+				"Who are you?",
+				"What are you?",
+				"Who you are?",
+				"What do you do?",
+				"what can you do?"
+			],
+			"responses": [
+				"I'm KBot your Python Data bot analyst.  I can help analyze data for you... would you like to open a file?",
+				"Hi!  I am the KBot, your personal Python data anayst version 1.0  \r\n\r\nI am here to help analyze data with you"
+			]
+		},
+		{
+			"tag": "name",
+			"patterns": [
+				"what is your name",
+				"what should I call you",
+				"whats your name?",
+				"My name is",
+				"My name is, what is your name",
+				"name?"
+			],
+			"responses": [
+				"You can call me the KBot, your persona Analyst",
+				"I'm KBot !!",
+				"Just call me as... KBot"
+			]
+		},
+		{
+			"tag": "help",
+			"patterns": [
+				"Could you help me?",
+				"give me a hand please",
+				"Can you help?",
+				"What can you do for me?",
+				"I need a support",
+				"I need a help",
+				"support me please"
+			],
+			"responses": [
+				"Tell me how can assist, what can I do",
+				"Tell me your problem..I'm here to help",
+				"Yes, how can I help YOU"
+			]
+		},
+		{
+			"tag": "opendata",
+			"patterns": [
+				"I want to open a file",
+				"open data",
+				"I would like to open a data file",
+				"can you open a data file for me",
+				"lets open a data file",
+				"open",
+				"please open",
+				"can you please open",
+				"can you open",
+				"I want you to open",
+				"can you open",
+				"I would like you to open",
+				"how about opening file",
+				"open the file",
+				"I would like you to open file",
+				"I would like to open"
+			],
+			"responses": [ "Would you like to open this data file", "OK, I will open this file" ]
+		},
+		{
+			"tag": "mean",
+			"patterns": [
+				"can you get the mean",
+				"what is the mean",
+				"mean",
+				"please get mean",
+				"calculate mean"
+			],
+			"responses": [
+				"Here is the mean",
+				"The mean is"
+			]
+		},
+		{
+			"tag": "histogram",
+			"patterns": [
+				"can you plot histogram",
+				"what is the histogram",
+				"histogram",
+				"please get histogram",
+				"calculate histogram"
+			],
+			"responses": [
+				"Here is the histogram plot",
+				"The histogram plot is"
+			]
+		},
+		{
+			"tag": "plot",
+			"patterns": [
+				"can you plot data",
+				"what is the plot",
+				"plot",
+				"please get plot",
+				"calculate plot",
+				"show plot"
+			],
+			"responses": [
+				"Here is the histogram plot",
+				"The histogram plot is"
+			]
+		},
+		{
+			"tag": "standarddeviation",
+			"patterns": [
+				"can you show standard deviation",
+				"what is the standard deviation",
+				"standard deviation",
+				"please get standard deviation",
+				"calculate standard deviation",
+				"show sd",
+				"what is sd",
+				"sd please",
+				"standard deviation please",
+				"sd"
+			],
+			"responses": [
+				"Here is the histogram plot",
+				"The histogram plot is"
+			]
+		},
+		{
+			"tag": "complaint",
+			"patterns": [
+				"have a complaint",
+				"I want to raise a complaint",
+				"there is a complaint about a service"
+			],
+			"responses": [
+				"What is your problem now?",
+				"Look, everything you do wrong isn't my fault"
+			]
+		}
+	]
+}

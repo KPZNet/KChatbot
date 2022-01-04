@@ -385,7 +385,7 @@ datasciencepack
 *.csv
 WordVectorDatabase
 PythonPack
-*.json
+
 stats.*
 
 
@@ -397,3 +397,5 @@ stats.*
 *.jsonout
 
 
+StatsQA.json
+intents_qa.json
