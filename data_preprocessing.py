@@ -215,7 +215,6 @@ def convert_qa_to_json(jsonFilePath, cQ, cA, max_sets, num_augmented_answers):
     csv_to_json(cQ, cA, max_sets, num_augmented_answers, jsonFilePath)
     print("Completed intents_qa JSON file")
 
-# ---------------------------------
 
 def scrub_jsonfile(tfile, randos=10):
     data = None
@@ -244,7 +243,6 @@ def scrub_jsonfile(tfile, randos=10):
         jsonString = json.dumps(data, indent=4)
         jsonf.write(jsonString)
 
-# ---------------------------------
 
 def readinquestions(rows_to_read, date_cut):
     dtypes_questions = {'Id': 'int32', 'CreationDate': 'str', 'Score': 'int16', 'Title': 'str', 'Body': 'str'}
