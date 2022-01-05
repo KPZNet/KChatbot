@@ -140,8 +140,10 @@ def scrub_sentence_mid(x):
     x= autocorrect(x)
     return x
 
-def get_randos(text, numrandos):
+def get_randos(text, numrandos, keeporig = False):
     at = []
+    if keeporig:
+        at.append(text)
     aug = naw.SynonymAug(aug_src='wordnet')
     for i in range(numrandos):
         t = aug.augment(text)
@@ -231,10 +233,10 @@ def scrub_jsonfile(tfile, randos=10):
             for pattern in intent['patterns']:
                 plistorig.append(pattern)
                 p = scrub_sentence_min(pattern)
-                added_rando_patterns = get_randos(p, randos)           
-                plistscrubbed.append(p)
-                plistscrubbed.append(added_rando_patterns)
-            intent['patterns'] = plistscrubbed
+                a = get_randos(p, randos, True) 
+                plistscrubbed += a
+               
+            intent['patterns'] = list(set(plistscrubbed))
             intent['patterns_orig'] = plistorig
 
     tfile += '.scrubbed'
