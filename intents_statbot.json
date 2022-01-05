@@ -123,8 +123,8 @@
 				"show plot"
 			],
 			"responses": [
-				"Here is the histogram plot",
-				"The histogram plot is"
+				"Here is a series plot, just shows all the numerical data graphically",
+				"The series plot shows all the numeric data"
 			]
 		},
 		{

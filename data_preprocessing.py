@@ -2,7 +2,7 @@
 import time as time
 import numpy as np
 import pandas as pd
-import gc
+import os
 
 import re
 from bs4 import BeautifulSoup
@@ -144,7 +144,18 @@ def get_randos(text, numrandos, keeporig = False):
     at = []
     if keeporig:
         at.append(text)
-    aug = naw.SynonymAug(aug_src='wordnet')
+    
+    #aug = naw.SynonymAug(aug_src='wordnet')
+    #aug = naf.Sequential([aug_bert,aug_w2v])
+
+    TOPK=20 #default=100
+    ACT = 'insert' #"substitute"
+ 
+    aug = naw.ContextualWordEmbsAug(
+        model_path='distilbert-base-uncased', 
+        device='cuda',
+        action=ACT, top_k=TOPK)
+
     for i in range(numrandos):
         t = aug.augment(text)
         at.append(t)
@@ -238,8 +249,9 @@ def scrub_jsonfile(tfile, randos=10):
             intent['patterns'] = list(set(plistscrubbed))
             intent['patterns_orig'] = plistorig
 
-    tfile += '.scrubbed'
-    with open(tfile, 'w', encoding='utf-8') as jsonf:
+    split_tup = os.path.splitext(tfile)
+    filen = split_tup[0] + '_mready.json'
+    with open(filen, 'w', encoding='utf-8') as jsonf:
         jsonString = json.dumps(data, indent=4)
         jsonf.write(jsonString)
 
