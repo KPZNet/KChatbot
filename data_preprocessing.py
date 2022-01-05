@@ -220,7 +220,12 @@ def scrub_jsonfile(tfile, randos=10):
     with open(tfile, "r") as file:
         data = json.load(file)
         
+        l = len(data['intents'])
+        j = 0
         for intent in data['intents']:
+            print("Processing Intent {0} / {1}".format(j,l))
+            j += 1
+            
             plistscrubbed = []
             plistorig = []
             for pattern in intent['patterns']:
@@ -279,12 +284,14 @@ def preprocess_statbot_csvs():
     jsonFilePath = "StatsQA.json"
     csv_to_json(cQ, cA, 10000, 40, jsonFilePath)
     
-    #scrub_jsonfile('intents_databot.json')
     print("Done building clean JSON")
 
+def post_process_statbot_json():
+    scrub_jsonfile('intents_statbot.json')
+    print("Done processing statbot JSON")
 
 if __name__ == "__main__":
-    pass
+    post_process_statbot_json()
     #preprocess_statbot_csvs()
 
 
