@@ -399,3 +399,6 @@ stats.*
 
 StatsQA.json
 intents_qa.json
+intents_databot.json
+intents.json
+intents_databot - Copy.json
