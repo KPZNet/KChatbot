@@ -125,7 +125,7 @@ def build_modeler(model_name, epochs):
 
 def build_statbot():
 
-    build_trainer('intents_statbot.json', model_name = 'statbotQA', vectorize=True)
+    build_trainer('intents_statbot.json.scrubbed', model_name = 'statbotQA', vectorize=True)
     build_modeler('statbotQA', 50)
     deploy_model('statbotQA')
     print("Built!")
