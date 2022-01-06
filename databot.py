@@ -83,7 +83,7 @@ def chat():
             c = rd.responses
             patterns = rd.patterns
             if len(c) == 0:
-                print("chatbot does not understand")
+                print("I'm sorry, I don't understand, say that again please?")
             else:
                 print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
                 print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
@@ -95,7 +95,7 @@ def chat():
             if tag == 'opendata':
                 bm = getdatafile(inp)
 
-                if bm is not None:
+                if (bm is not None) and (len(bm) > 0) :
                     print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
                     try:
                         fdataset = pd.read_csv(bm)
@@ -110,7 +110,7 @@ def chat():
                     except Exception as e:
                         print("Could NOT open file, not sure why, here was exception {0}".format(e))
                 else:
-                    print("What file would you like to open?")
+                    print("...but please let me know the file name, say it again?")
             if tag == 'mean':
                 if fileisopen:
                     fdataset.plot.box(title="Box and whisker plot", grid=True)

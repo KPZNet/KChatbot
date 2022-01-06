@@ -148,13 +148,17 @@ def get_randos(text, numrandos, keeporig = False):
     #aug = naw.SynonymAug(aug_src='wordnet')
     #aug = naf.Sequential([aug_bert,aug_w2v])
 
-    TOPK=20 #default=100
-    ACT = 'insert' #"substitute"
+    #TOPK=20 #default=100
+    #ACT = 'insert' #"substitute"
  
-    aug = naw.ContextualWordEmbsAug(
-        model_path='distilbert-base-uncased', 
-        device='cuda',
-        action=ACT, top_k=TOPK)
+    #aug = naw.ContextualWordEmbsAug(
+    #    model_path='distilbert-base-uncased', 
+    #    #device='cuda',
+    #    action=ACT, top_k=TOPK)
+
+    aug = naw.SynonymAug(aug_src='wordnet', model_path=None, name='Synonym_Aug', aug_min=1, aug_max=10, aug_p=0.3, lang='eng', 
+                     stopwords=None, tokenizer=None, reverse_tokenizer=None, stopwords_regex=None, force_reload=False, 
+                     verbose=0)
 
     for i in range(numrandos):
         t = aug.augment(text)
@@ -290,7 +294,7 @@ def readinanswers(rows_to_read, date_cut):
     df.info()
     return df
 
-def preprocess_statbot_csvs():
+def preprocess_statexchangebot_csvs():
     cQ = "stats_a.csv"
     cA = "stats_q.csv"
     jsonFilePath = "StatsQA.json"
@@ -299,12 +303,12 @@ def preprocess_statbot_csvs():
     print("Done building clean JSON")
 
 def post_process_statbot_json():
-    scrub_jsonfile('intents_statbot.json')
+    scrub_jsonfile('intents_statbot.json', 1)
     print("Done processing statbot JSON")
 
 if __name__ == "__main__":
     post_process_statbot_json()
-    #preprocess_statbot_csvs()
+    #preprocess_statexchangebot_csvs()
 
 
 

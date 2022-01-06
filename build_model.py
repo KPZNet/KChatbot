@@ -122,15 +122,13 @@ def build_modeler(model_name, epochs):
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
-
 def build_statbot():
-
-    build_trainer('intents_statbot_mready.json', model_name = 'statbotQA', vectorize=True)
-    build_modeler('statbotQA', 50)
-    deploy_model('statbotQA')
+    model_name = 'statbotQA'
+    build_trainer('intents_statbot_mready.json', model_name, vectorize=True)
+    build_modeler(model_name, 50)
+    deploy_model(model_name)
     print("Built!")
 
-    start_chat()
 
 if __name__ == "__main__":
     build_statbot()
