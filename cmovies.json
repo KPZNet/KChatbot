@@ -1,0 +1,922 @@
+{
+    "intents": [
+        {
+            "tag": 0,
+            "patterns": [
+                "Can we make this quick?  Roxanne Korrine and Andrew Barrett are having an incredibly horrendous public break- up on the quad.  Again."
+            ],
+            "responses": [
+                "Well, I thought we'd start with pronunciation, if that's okay with you."
+            ]
+        },
+        {
+            "tag": 1,
+            "patterns": [
+                "Well, I thought we'd start with pronunciation, if that's okay with you."
+            ],
+            "responses": [
+                "Not the hacking and gagging and spitting part.  Please."
+            ]
+        },
+        {
+            "tag": 2,
+            "patterns": [
+                "Not the hacking and gagging and spitting part.  Please."
+            ],
+            "responses": [
+                "Okay... then how 'bout we try out some French cuisine.  Saturday?  Night?"
+            ]
+        },
+        {
+            "tag": 3,
+            "patterns": [
+                "You're asking me out.  That's so cute. What's your name again?"
+            ],
+            "responses": [
+                "Forget it."
+            ]
+        },
+        {
+            "tag": 4,
+            "patterns": [
+                "No, no, it's my fault -- we didn't have a proper introduction ---"
+            ],
+            "responses": [
+                "Cameron."
+            ]
+        },
+        {
+            "tag": 5,
+            "patterns": [
+                "Cameron."
+            ],
+            "responses": [
+                "The thing is, Cameron -- I'm at the mercy of a particularly hideous breed of loser.  My sister.  I can't date until she does."
+            ]
+        },
+        {
+            "tag": 6,
+            "patterns": [
+                "The thing is, Cameron -- I'm at the mercy of a particularly hideous breed of loser.  My sister.  I can't date until she does."
+            ],
+            "responses": [
+                "Seems like she could get a date easy enough..."
+            ]
+        },
+        {
+            "tag": 7,
+            "patterns": [
+                "Why?"
+            ],
+            "responses": [
+                "Unsolved mystery.  She used to be really popular when she started high school, then it was just like she got sick of it or something."
+            ]
+        },
+        {
+            "tag": 8,
+            "patterns": [
+                "Unsolved mystery.  She used to be really popular when she started high school, then it was just like she got sick of it or something."
+            ],
+            "responses": [
+                "That's a shame."
+            ]
+        },
+        {
+            "tag": 9,
+            "patterns": [
+                "Gosh, if only we could find Kat a boyfriend..."
+            ],
+            "responses": [
+                "Let me see what I can do."
+            ]
+        },
+        {
+            "tag": 10,
+            "patterns": [
+                "C'esc ma tete. This is my head"
+            ],
+            "responses": [
+                "Right.  See?  You're ready for the quiz."
+            ]
+        },
+        {
+            "tag": 11,
+            "patterns": [
+                "Right.  See?  You're ready for the quiz."
+            ],
+            "responses": [
+                "I don't want to know how to say that though.  I want to know useful things. Like where the good stores are.  How much does champagne cost?  Stuff like Chat.  I have never in my life had to point out my head to someone."
+            ]
+        },
+        {
+            "tag": 12,
+            "patterns": [
+                "I don't want to know how to say that though.  I want to know useful things. Like where the good stores are.  How much does champagne cost?  Stuff like Chat.  I have never in my life had to point out my head to someone."
+            ],
+            "responses": [
+                "That's because it's such a nice one."
+            ]
+        },
+        {
+            "tag": 13,
+            "patterns": [
+                "That's because it's such a nice one."
+            ],
+            "responses": [
+                "Forget French."
+            ]
+        },
+        {
+            "tag": 14,
+            "patterns": [
+                "How is our little Find the Wench A Date plan progressing?"
+            ],
+            "responses": [
+                "Well, there's someone I think might be --"
+            ]
+        },
+        {
+            "tag": 15,
+            "patterns": [
+                "There."
+            ],
+            "responses": [
+                "Where?"
+            ]
+        },
+        {
+            "tag": 16,
+            "patterns": [
+                "You got something on your mind?"
+            ],
+            "responses": [
+                "I counted on you to help my cause. You and that thug are obviously failing. Aren't we ever going on our date?"
+            ]
+        },
+        {
+            "tag": 17,
+            "patterns": [
+                "You have my word.  As a gentleman"
+            ],
+            "responses": [
+                "You're sweet."
+            ]
+        },
+        {
+            "tag": 18,
+            "patterns": [
+                "How do you get your hair to look like that?"
+            ],
+            "responses": [
+                "Eber's Deep Conditioner every two days. And I never, ever use a blowdryer without the diffuser attachment."
+            ]
+        },
+        {
+            "tag": 19,
+            "patterns": [
+                "Sure have."
+            ],
+            "responses": [
+                "I really, really, really wanna go, but I can't.  Not unless my sister goes."
+            ]
+        },
+        {
+            "tag": 20,
+            "patterns": [
+                "I really, really, really wanna go, but I can't.  Not unless my sister goes."
+            ],
+            "responses": [
+                "I'm workin' on it. But she doesn't seem to be goin' for him."
+            ]
+        },
+        {
+            "tag": 21,
+            "patterns": [
+                "She's not a..."
+            ],
+            "responses": [
+                "Lesbian?  No. I found a picture of Jared Leto in one of her drawers, so I'm pretty sure she's not harboring same-sex tendencies."
+            ]
+        },
+        {
+            "tag": 22,
+            "patterns": [
+                "Lesbian?  No. I found a picture of Jared Leto in one of her drawers, so I'm pretty sure she's not harboring same-sex tendencies."
+            ],
+            "responses": [
+                "So that's the kind of guy she likes? Pretty ones?"
+            ]
+        },
+        {
+            "tag": 23,
+            "patterns": [
+                "So that's the kind of guy she likes? Pretty ones?"
+            ],
+            "responses": [
+                "Who knows?  All I've ever heard her say is that she'd dip before dating a guy that smokes."
+            ]
+        },
+        {
+            "tag": 24,
+            "patterns": [
+                "Hi."
+            ],
+            "responses": [
+                "Looks like things worked out tonight, huh?"
+            ]
+        },
+        {
+            "tag": 25,
+            "patterns": [
+                "You know Chastity?"
+            ],
+            "responses": [
+                "I believe we share an art instructor"
+            ]
+        },
+        {
+            "tag": 26,
+            "patterns": [
+                "Have fun tonight?"
+            ],
+            "responses": [
+                "Tons"
+            ]
+        },
+        {
+            "tag": 27,
+            "patterns": [
+                "I looked for you back at the party, but you always seemed to be \"occupied\"."
+            ],
+            "responses": [
+                "I was?"
+            ]
+        },
+        {
+            "tag": 28,
+            "patterns": [
+                "I was?"
+            ],
+            "responses": [
+                "You never wanted to go out with 'me, did you?"
+            ]
+        },
+        {
+            "tag": 29,
+            "patterns": [
+                "Well, no..."
+            ],
+            "responses": [
+                "Then that's all you had to say."
+            ]
+        },
+        {
+            "tag": 30,
+            "patterns": [
+                "Then that's all you had to say."
+            ],
+            "responses": [
+                "But"
+            ]
+        },
+        {
+            "tag": 31,
+            "patterns": [
+                "But"
+            ],
+            "responses": [
+                "You always been this selfish?"
+            ]
+        },
+        {
+            "tag": 32,
+            "patterns": [
+                "Then Guillermo says, \"If you go any lighter, you're gonna look like an extra on 90210.\""
+            ],
+            "responses": [
+                "No..."
+            ]
+        },
+        {
+            "tag": 33,
+            "patterns": [
+                "do you listen to this crap?"
+            ],
+            "responses": [
+                "What crap?"
+            ]
+        },
+        {
+            "tag": 34,
+            "patterns": [
+                "What crap?"
+            ],
+            "responses": [
+                "Me.  This endless ...blonde babble. I'm like, boring myself."
+            ]
+        },
+        {
+            "tag": 35,
+            "patterns": [
+                "Me.  This endless ...blonde babble. I'm like, boring myself."
+            ],
+            "responses": [
+                "Thank God!  If I had to hear one more story about your coiffure..."
+            ]
+        },
+        {
+            "tag": 36,
+            "patterns": [
+                "I figured you'd get to the good stuff eventually."
+            ],
+            "responses": [
+                "What good stuff?"
+            ]
+        },
+        {
+            "tag": 37,
+            "patterns": [
+                "What good stuff?"
+            ],
+            "responses": [
+                "The \"real you\"."
+            ]
+        },
+        {
+            "tag": 38,
+            "patterns": [
+                "The \"real you\"."
+            ],
+            "responses": [
+                "Like my fear of wearing pastels?"
+            ]
+        },
+        {
+            "tag": 39,
+            "patterns": [
+                "I'm kidding.  You know how sometimes you just become this \"persona\"?  And you don't know how to quit?"
+            ],
+            "responses": [
+                "No"
+            ]
+        },
+        {
+            "tag": 40,
+            "patterns": [
+                "No"
+            ],
+            "responses": [
+                "Okay -- you're gonna need to learn how to lie."
+            ]
+        },
+        {
+            "tag": 41,
+            "patterns": [
+                "Wow"
+            ],
+            "responses": [
+                "Let's go."
+            ]
+        },
+        {
+            "tag": 42,
+            "patterns": [
+                "She okay?"
+            ],
+            "responses": [
+                "I hope so."
+            ]
+        },
+        {
+            "tag": 43,
+            "patterns": [
+                "They do to!"
+            ],
+            "responses": [
+                "They do not!"
+            ]
+        },
+        {
+            "tag": 44,
+            "patterns": [
+                "Did you change your hair?"
+            ],
+            "responses": [
+                "No."
+            ]
+        },
+        {
+            "tag": 45,
+            "patterns": [
+                "No."
+            ],
+            "responses": [
+                "You might wanna think about it"
+            ]
+        },
+        {
+            "tag": 46,
+            "patterns": [
+                "Where did he go?  He was just here."
+            ],
+            "responses": [
+                "Who?"
+            ]
+        },
+        {
+            "tag": 47,
+            "patterns": [
+                "Who?"
+            ],
+            "responses": [
+                "Joey."
+            ]
+        },
+        {
+            "tag": 48,
+            "patterns": [
+                "Great"
+            ],
+            "responses": [
+                "Would you mind getting me a drink, Cameron?"
+            ]
+        },
+        {
+            "tag": 49,
+            "patterns": [
+                "He practically proposed when he found out we had the same dermatologist. I mean. Dr. Bonchowski is great an all, but he's not exactly relevant party conversation."
+            ],
+            "responses": [
+                "Is he oily or dry?"
+            ]
+        },
+        {
+            "tag": 50,
+            "patterns": [
+                "Is he oily or dry?"
+            ],
+            "responses": [
+                "Combination.  I don't know -- I thought he'd be different.  More of a gentleman..."
+            ]
+        },
+        {
+            "tag": 51,
+            "patterns": [
+                "Bianca, I don't think the highlights of dating Joey Dorsey are going to include door-opening and coat-holding."
+            ],
+            "responses": [
+                "Sometimes I wonder if the guys we're supposed to want to go out with are the ones we actually want to go out with, you know?"
+            ]
+        },
+        {
+            "tag": 52,
+            "patterns": [
+                "Sometimes I wonder if the guys we're supposed to want to go out with are the ones we actually want to go out with, you know?"
+            ],
+            "responses": [
+                "All I know is -- I'd give up my private line to go out with a guy like Joey."
+            ]
+        },
+        {
+            "tag": 53,
+            "patterns": [
+                "I have to be home in twenty minutes."
+            ],
+            "responses": [
+                "I don't have to be home 'til two."
+            ]
+        },
+        {
+            "tag": 54,
+            "patterns": [
+                "You think you ' re the only sophomore at the prom?"
+            ],
+            "responses": [
+                "I did."
+            ]
+        },
+        {
+            "tag": 55,
+            "patterns": [
+                "It's more"
+            ],
+            "responses": [
+                "Expensive?"
+            ]
+        },
+        {
+            "tag": 56,
+            "patterns": [
+                "Exactly  So, you going to Bogey Lowenbrau's thing on Saturday?"
+            ],
+            "responses": [
+                "Hopefully."
+            ]
+        },
+        {
+            "tag": 57,
+            "patterns": [
+                "So yeah, I've got the Sears catalog thing going -- and the tube sock gig \" that's gonna be huge.  And then I'm up for an ad for Queen Harry next week."
+            ],
+            "responses": [
+                "Queen Harry?"
+            ]
+        },
+        {
+            "tag": 58,
+            "patterns": [
+                "Queen Harry?"
+            ],
+            "responses": [
+                "It's a gay cruise line, but I'll be, like, wearing a uniform and stuff."
+            ]
+        },
+        {
+            "tag": 59,
+            "patterns": [
+                "Neat..."
+            ],
+            "responses": [
+                "My agent says I've got a good shot at being the Prada guy next year."
+            ]
+        },
+        {
+            "tag": 60,
+            "patterns": [
+                "Hey, sweet cheeks."
+            ],
+            "responses": [
+                "Hi, Joey."
+            ]
+        },
+        {
+            "tag": 61,
+            "patterns": [
+                "Hi, Joey."
+            ],
+            "responses": [
+                "You're concentrating awfully hard considering it's gym class."
+            ]
+        },
+        {
+            "tag": 62,
+            "patterns": [
+                "Listen, I want to talk to you about the prom."
+            ],
+            "responses": [
+                "You know the deal.  I can ' t go if Kat doesn't go --"
+            ]
+        },
+        {
+            "tag": 63,
+            "patterns": [
+                "Where've you been?"
+            ],
+            "responses": [
+                "Nowhere... Hi, Daddy."
+            ]
+        },
+        {
+            "tag": 64,
+            "patterns": [
+                "I have the potential to smack the crap out of you if you don't get out of my way."
+            ],
+            "responses": [
+                "Can you at least start wearing a bra?"
+            ]
+        },
+        {
+            "tag": 65,
+            "patterns": [
+                "Oh my God, does this mean you're becoming normal?"
+            ],
+            "responses": [
+                "It means that Gigglepuss is playing at Club Skunk and we're going."
+            ]
+        },
+        {
+            "tag": 66,
+            "patterns": [
+                "It means that Gigglepuss is playing at Club Skunk and we're going."
+            ],
+            "responses": [
+                "Oh, I thought you might have a date  I don't know why I'm bothering to ask, but are you going to Bogey Lowenstein's party Saturday night?"
+            ]
+        },
+        {
+            "tag": 67,
+            "patterns": [
+                "Oh, I thought you might have a date  I don't know why I'm bothering to ask, but are you going to Bogey Lowenstein's party Saturday night?"
+            ],
+            "responses": [
+                "What do you think?"
+            ]
+        },
+        {
+            "tag": 68,
+            "patterns": [
+                "What do you think?"
+            ],
+            "responses": [
+                "I think you're a freak.  I think you do this to torture me.  And I think you suck."
+            ]
+        },
+        {
+            "tag": 69,
+            "patterns": [
+                "You're ruining my life'  Because you won't be normal, I can't be normal."
+            ],
+            "responses": [
+                "What's normal?"
+            ]
+        },
+        {
+            "tag": 70,
+            "patterns": [
+                "What's normal?"
+            ],
+            "responses": [
+                "Bogey Lowenstein's party is normal, but you're too busy listening to Bitches Who Need Prozac to know that."
+            ]
+        },
+        {
+            "tag": 71,
+            "patterns": [
+                "Can't you forget for just one night that you're completely wretched?"
+            ],
+            "responses": [
+                "At least I'm not a clouted fen- sucked hedge-pig."
+            ]
+        },
+        {
+            "tag": 72,
+            "patterns": [
+                "Like I'm supposed to know what that even means."
+            ],
+            "responses": [
+                "It's Shakespeare.  Maybe you've heard of him?"
+            ]
+        },
+        {
+            "tag": 73,
+            "patterns": [
+                "It's Shakespeare.  Maybe you've heard of him?"
+            ],
+            "responses": [
+                "Yeah, he's your freak friend Mandella's boyfriend.  I guess since I'm not allowed to go out, I should obsess over a dead guy, too."
+            ]
+        },
+        {
+            "tag": 74,
+            "patterns": [
+                "You are so completely unbalanced."
+            ],
+            "responses": [
+                "Can we go now?"
+            ]
+        },
+        {
+            "tag": 75,
+            "patterns": [
+                "Bianca, I need to talk to you -- I need to tell you --"
+            ],
+            "responses": [
+                "I really don't think I need any social advice from you right now."
+            ]
+        },
+        {
+            "tag": 76,
+            "patterns": [
+                "I don't get you.  You act like you're too good for any of this, and then you go totally apeshit when you get here."
+            ],
+            "responses": [
+                "You're welcome."
+            ]
+        },
+        {
+            "tag": 77,
+            "patterns": [
+                "Listen, I know you hate having to sit home because I'm not Susie High School."
+            ],
+            "responses": [
+                "Like you care."
+            ]
+        },
+        {
+            "tag": 78,
+            "patterns": [
+                "Like you care."
+            ],
+            "responses": [
+                "I do care. But I'm a firm believer in doing something for your own reasons, not someone else ' s ."
+            ]
+        },
+        {
+            "tag": 79,
+            "patterns": [
+                "I do care. But I'm a firm believer in doing something for your own reasons, not someone else ' s ."
+            ],
+            "responses": [
+                "I wish I had that luxury. I'm the only sophomore that got asked to the prom and I can't go, because you won ' t."
+            ]
+        },
+        {
+            "tag": 80,
+            "patterns": [
+                "Joey never told you we went out, did he?"
+            ],
+            "responses": [
+                "What?"
+            ]
+        },
+        {
+            "tag": 81,
+            "patterns": [
+                "What?"
+            ],
+            "responses": [
+                "In 9th.  For a month"
+            ]
+        },
+        {
+            "tag": 82,
+            "patterns": [
+                "In 9th.  For a month"
+            ],
+            "responses": [
+                "Why?"
+            ]
+        },
+        {
+            "tag": 83,
+            "patterns": [
+                "Why?"
+            ],
+            "responses": [
+                "He was, like, a total babe"
+            ]
+        },
+        {
+            "tag": 84,
+            "patterns": [
+                "He was, like, a total babe"
+            ],
+            "responses": [
+                "But you hate Joey"
+            ]
+        },
+        {
+            "tag": 85,
+            "patterns": [
+                "But you hate Joey"
+            ],
+            "responses": [
+                "Now I do.  Back then, was a different story."
+            ]
+        },
+        {
+            "tag": 86,
+            "patterns": [
+                "Now I do.  Back then, was a different story."
+            ],
+            "responses": [
+                "As in..."
+            ]
+        },
+        {
+            "tag": 87,
+            "patterns": [
+                "He said everyone was doing it.  So I did it."
+            ],
+            "responses": [
+                "You did what?"
+            ]
+        },
+        {
+            "tag": 88,
+            "patterns": [
+                "You did what?"
+            ],
+            "responses": [
+                "Just once.  Afterwards, I told him I didn't want to anymore.  I wasn't ready. He got pissed.  Then he broke up with me."
+            ]
+        },
+        {
+            "tag": 89,
+            "patterns": [
+                "But"
+            ],
+            "responses": [
+                "After that, I swore I'd never do anything just because \"everyone else\" was doing it.  And I haven't since. Except for Bogey's party, and my stunning gastro-intestinal display --"
+            ]
+        },
+        {
+            "tag": 90,
+            "patterns": [
+                "After that, I swore I'd never do anything just because \"everyone else\" was doing it.  And I haven't since. Except for Bogey's party, and my stunning gastro-intestinal display --"
+            ],
+            "responses": [
+                "Why didn't you tell me?"
+            ]
+        },
+        {
+            "tag": 91,
+            "patterns": [
+                "Why didn't you tell me?"
+            ],
+            "responses": [
+                "I wanted to let you make up your own mind about him."
+            ]
+        },
+        {
+            "tag": 92,
+            "patterns": [
+                "I wanted to let you make up your own mind about him."
+            ],
+            "responses": [
+                "No. you didn't!  If you really thought I could make my own decisions, you would've let me go out with him instead of helping Daddy hold me hostage."
+            ]
+        },
+        {
+            "tag": 93,
+            "patterns": [
+                "That's not"
+            ],
+            "responses": [
+                "I'm not stupid enough to repeat your mistakes."
+            ]
+        },
+        {
+            "tag": 94,
+            "patterns": [
+                "I'm not stupid enough to repeat your mistakes."
+            ],
+            "responses": [
+                "I guess I thought I was protecting you."
+            ]
+        },
+        {
+            "tag": 95,
+            "patterns": [
+                "I guess I thought I was protecting you."
+            ],
+            "responses": [
+                "God, you're just like him! Just keep me locked away in the dark, so I can't experience anything for myself"
+            ]
+        },
+        {
+            "tag": 96,
+            "patterns": [
+                "God, you're just like him! Just keep me locked away in the dark, so I can't experience anything for myself"
+            ],
+            "responses": [
+                "Not all experiences are good, Bianca. You can't always trust the people you want to."
+            ]
+        },
+        {
+            "tag": 97,
+            "patterns": [
+                "Not all experiences are good, Bianca. You can't always trust the people you want to."
+            ],
+            "responses": [
+                "I guess I'll never know, will I?"
+            ]
+        },
+        {
+            "tag": 98,
+            "patterns": [
+                "You looked beautiful last night, you know."
+            ],
+            "responses": [
+                "So did you"
+            ]
+        },
+        {
+            "tag": 99,
+            "patterns": [
+                "Let go!"
+            ],
+            "responses": [
+                "You set me up."
+            ]
+        },
+        {
+            "tag": 100,
+            "patterns": [
+                "You set me up."
+            ],
+            "responses": [
+                "I just wanted --"
+            ]
+        },
+        {
+            "tag": 101,
+            "patterns": [
+                "I just wanted --"
+            ],
+            "responses": [
+                "What? To completely damage me?  To send me to therapy forever? What?"
+            ]
+        }
+    ]
+}

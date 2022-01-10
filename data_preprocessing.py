@@ -239,7 +239,8 @@ def scrub_jsonfile(tfile, randos=10):
         l = len(data['intents'])
         j = 0
         for intent in data['intents']:
-            print("Processing Intent {0} / {1}".format(j,l))
+            if j % (l/100) == 0:
+                print("Processing Intent {0} / {1}".format(j,l))
             j += 1
             
             plistscrubbed = []
@@ -306,9 +307,15 @@ def post_process_statbot_json():
     scrub_jsonfile('intents_statbot.json', 1)
     print("Done processing statbot JSON")
 
+def post_process_cmovies_json():
+    scrub_jsonfile('cmovies.json', 50)
+    print("Done processing CMOVIES JSON")
+
+
 if __name__ == "__main__":
-    post_process_statbot_json()
+    #post_process_statbot_json()
     #preprocess_statexchangebot_csvs()
+    post_process_cmovies_json()
 
 
 

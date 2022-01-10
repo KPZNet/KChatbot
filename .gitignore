@@ -385,6 +385,7 @@ datasciencepack
 *.csv
 WordVectorDatabase
 PythonPack
+movieinput
 
 stats.*
 
