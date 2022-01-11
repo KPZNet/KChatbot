@@ -3,14 +3,14 @@
         {
             "tag": "greeting",
             "patterns": [
-                "Hello",
-                "Constitute anyone there?",
-                "Hay",
-                "Hi",
-                "How do you do",
+                "Is anyone there?",
                 "Hey",
-                "Hullo",
-                "Is anyone there?"
+                "Hello",
+                "How do you do",
+                "Equal anyone on that point?",
+                "Howdy",
+                "Hi",
+                "Hay"
             ],
             "responses": [
                 "Hello",
@@ -28,11 +28,11 @@
         {
             "tag": "goodbye",
             "patterns": [
-                "Good day",
+                "Adieu",
                 "Goodbye",
-                "See you later on",
                 "See you later",
-                "Bye"
+                "Bye",
+                "Au revoir"
             ],
             "responses": [
                 "See you later",
@@ -49,10 +49,11 @@
             "tag": "thanks",
             "patterns": [
                 "that is helpful",
+                "Thank you",
+                "Thanks for the aid",
                 "that be helpful",
                 "Thanks",
-                "Thanks for the help",
-                "Thank you"
+                "Thanks for the help"
             ],
             "responses": [
                 "Happy to help!",
@@ -70,16 +71,15 @@
         {
             "tag": "about",
             "patterns": [
-                "What are you?",
-                "Who are you?",
-                "what can you cause?",
-                "What do you act?",
-                "what can you do?",
-                "What be you?",
-                "World health organization you are?",
                 "What do you do?",
                 "Who you are?",
-                "World health organization be you?"
+                "Who are you?",
+                "what sack you suffice?",
+                "What are you?",
+                "World health organization be you?",
+                "what can you do?",
+                "What arrange you do?",
+                "World health organization you are?"
             ],
             "responses": [
                 "I'm KBot your Python Data bot analyst.  I can help analyze data for you... would you like to open a file?",
@@ -96,16 +96,16 @@
         {
             "tag": "name",
             "patterns": [
-                "what constitute your name",
-                "what should Iodin call you",
-                "My name be",
+                "My epithet is",
+                "My name is",
+                "name?",
+                "My name is, what is your name",
+                "what is your name",
                 "what should I call you",
                 "gens?",
-                "My name is",
+                "My name live, what is your name",
                 "what is your name?",
-                "My name is, what is your name",
-                "name?",
-                "what is your name"
+                "what be your name"
             ],
             "responses": [
                 "You can call me the KBot, your persona Analyst",
@@ -124,19 +124,20 @@
         {
             "tag": "help",
             "patterns": [
-                "give me a deal please",
-                "I need a help",
-                "Commode you help?",
-                "Can you help?",
-                "1 necessitate a support",
                 "Could you help me?",
-                "What can you do for me?",
-                "Iodin need a assistance",
                 "give me a hand please",
-                "support me please",
+                "What arse you do for pine tree state?",
                 "support pine tree state please",
-                "What butt you do for me?",
-                "I need a support"
+                "One need a assistant",
+                "I need a help",
+                "What can you do for me?",
+                "give pine tree state a mitt please",
+                "support me please",
+                "One need a sustenance",
+                "Could you aid me?",
+                "Can you help?",
+                "I need a support",
+                "Can you avail?"
             ],
             "responses": [
                 "Tell me how can assist, what can I do",
@@ -156,36 +157,36 @@
         {
             "tag": "opendata",
             "patterns": [
-                "open the indian file",
-                "open",
-                "I want to open up a file cabinet",
-                "Ace would like you to open",
-                "Atomic number 53 would like to open",
-                "behind you open",
-                "One need you to open",
-                "can you open",
-                "overt",
-                "open data",
-                "I want you to open",
-                "1 would like to open a data file",
-                "I want to open a file",
-                "let us spread out a datum file",
-                "can you open a data file for me",
-                "how about open up file",
-                "how about opening file",
-                "can you open up",
-                "can you unfold a information file for maine",
-                "canful you please open",
-                "1 would like you to open up filing cabinet",
-                "I would like you to open",
+                "can you please unfold",
                 "let us open a data file",
-                "please open",
-                "I would like to open a data file",
+                "open data",
+                "how about opening file",
+                "how astir open up file",
+                "Iodin desire you to open",
+                "lav you open",
                 "can you please open",
+                "toilet you open",
+                "please open",
+                "can you open a data file for me",
+                "overt",
                 "open the file",
+                "Iodin would care you to spread out file",
+                "can you open up a data indian file for me",
+                "I would wish to open a data point file",
+                "Ane want to open a single file",
                 "I would like to open",
+                "I would like you to open file",
+                "can you open",
+                "open up the file",
                 "open information",
-                "I would like you to open file"
+                "open",
+                "please open up",
+                "I would wish to open",
+                "I want to open a file",
+                "I want you to open",
+                "I would like to open a data file",
+                "I would like you to open",
+                "let us open up a data point file"
             ],
             "responses": [
                 "Would you like to open this data file",
@@ -213,27 +214,27 @@
         {
             "tag": "mean",
             "patterns": [
-                "can you show the mean plot",
-                "can you show the mean value plot",
-                "mean value",
+                "what be the mean",
                 "mean",
+                "exhibit the mean value plot",
+                "tail end you amaze the mean",
+                "plot the mean value",
+                "calculate mean",
+                "please plot the mean",
+                "can you get the mean",
+                "show the mean plot",
+                "bottom you show the mean value plot",
                 "please get mean",
-                "plot mean value",
+                "mean value",
+                "please plat the mean",
+                "can you plot the mean",
+                "can you show the mean plot",
                 "plot mean",
                 "delight get mean",
-                "prove the mean value plot",
-                "send away you plot the mean value",
                 "what is the mean",
-                "can you get the mean",
-                "plot the mean",
-                "please plot the mean value",
-                "can you plot the mean",
-                "plot the mean value",
-                "what is the mean value",
-                "calculate mean",
-                "show the mean plot",
-                "please plot the mean",
-                "can you grow the mean value"
+                "can you plat the mean",
+                "plot of ground mean",
+                "plot the mean"
             ],
             "responses": [
                 "Here is the mean",
@@ -256,14 +257,14 @@
         {
             "tag": "histogram",
             "patterns": [
-                "what is the histogram",
-                "can you plot histogram",
                 "calculate histogram",
-                "please scram histogram",
-                "what comprise the histogram",
+                "please pay back histogram",
                 "histogram",
                 "please get histogram",
-                "ass you plot histogram"
+                "what is the histogram",
+                "can you plot histogram",
+                "what represent the histogram",
+                "butt you plot histogram"
             ],
             "responses": [
                 "Here is the histogram plot",
@@ -280,18 +281,17 @@
         {
             "tag": "plot",
             "patterns": [
-                "can you diagram data",
-                "what be the plot",
-                "game",
-                "please get plot",
-                "plot",
-                "show plot",
-                "can you plot data",
-                "calculate patch",
-                "display plot",
-                "calculate plot",
                 "what is the plot",
-                "please get patch"
+                "appearance plot",
+                "game",
+                "show plot",
+                "calculate plot",
+                "plot",
+                "what be the plot",
+                "delight get plot",
+                "please get plot",
+                "can you plot data",
+                "can you plat information"
             ],
             "responses": [
                 "Here is a series plot, just shows all the numerical data graphically",
@@ -309,24 +309,24 @@
         {
             "tag": "standarddeviation",
             "patterns": [
+                "what comprise the stock deviation",
+                "arse you show standard divagation",
+                "standard diversion",
+                "delight beat standard deviation",
+                "display sd",
+                "calculate received deviation",
+                "sd",
+                "received deviation please",
                 "what is the standard deviation",
-                "can you demonstrate standard difference",
-                "standard deviation",
+                "coyote state",
                 "calculate standard deviation",
                 "can you show standard deviation",
-                "what be the standard deviation",
-                "show sd",
-                "sd",
-                "sd please",
-                "calculate received deviation",
-                "show coyote state",
-                "please get standard deviation",
-                "coyote state",
-                "standard deflection please",
-                "standard digression",
+                "what is sd",
                 "standard deviation please",
-                "please get stock diversion",
-                "what is sd"
+                "sd please",
+                "show sd",
+                "standard deviation",
+                "please get standard deviation"
             ],
             "responses": [
                 "Here is the standard deviation",
@@ -348,12 +348,12 @@
         {
             "tag": "complaint",
             "patterns": [
-                "consume a complaint",
+                "deliver a complaint",
+                "I want to raise a complaint",
                 "have a complaint",
+                "in that respect embody a ailment about a service",
                 "there is a complaint about a service",
-                "there live a complaint astir a religious service",
-                "I want to raise a ailment",
-                "I want to raise a complaint"
+                "I need to grow a complaint"
             ],
             "responses": [
                 "What is your problem now?",
@@ -363,6 +363,58 @@
                 "have a complaint",
                 "I want to raise a complaint",
                 "there is a complaint about a service"
+            ]
+        },
+        {
+            "tag": "whatismean",
+            "patterns": [
+                "explain the mean",
+                "what live the mean",
+                "how to get bastardly",
+                "how to depend the mean",
+                "what is the mean",
+                "how to calculate the mean",
+                "explain the mean value",
+                "how to get mean"
+            ],
+            "responses": [
+                "The mean is the average or sum of data divided by total",
+                "The mean is the sum divided by total"
+            ],
+            "patterns_orig": [
+                "what is the mean",
+                "how to calculate the mean",
+                "how to get mean",
+                "explain the mean"
+            ]
+        },
+        {
+            "tag": "whatisstandarddeviation",
+            "patterns": [
+                "how to calculate the stock deviation",
+                "explain the stock deviance",
+                "explain the standard deviation",
+                "how to get received deviation",
+                "explain venereal infection",
+                "what is std",
+                "what be std",
+                "what is the standard deviation",
+                "what embody the standard deviation",
+                "how to get standard deviation",
+                "explain std",
+                "how to calculate the standard deviation"
+            ],
+            "responses": [
+                "The standard deviation measures the spread of data",
+                "Standard Deviation is a measure which shows how much variation (such as spread, dispersion, spread) from the mean exists.  It is a popular measure of variability because it returns to the original units of measure of the data set."
+            ],
+            "patterns_orig": [
+                "what is the standard deviation",
+                "how to calculate the standard deviation",
+                "how to get standard deviation",
+                "explain the standard deviation",
+                "what is std",
+                "explain std"
             ]
         }
     ]

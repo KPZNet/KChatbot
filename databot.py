@@ -147,12 +147,7 @@ def chat():
             print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
             print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
             print(Fore.GREEN + "\t\tChatBot:" + Style.RESET_ALL , np.random.choice(c2))
-                        
-                
-                    
-                    
-
-
+                                    
 def start_chat():
     print(Fore.YELLOW + "Welcome to KBot data Analyst!" + Style.RESET_ALL)
     chat()

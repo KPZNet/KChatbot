@@ -163,6 +163,34 @@
 				"What is your problem now?",
 				"Look, everything you do wrong isn't my fault"
 			]
+		},
+		{
+			"tag": "whatismean",
+			"patterns": [
+				"what is the mean",
+				"how to calculate the mean",
+				"how to get mean",
+				"explain the mean"
+			],
+			"responses": [
+				"The mean is the average or sum of data divided by total",
+				"The mean is the sum divided by total"
+			]
+		},
+		{
+			"tag": "whatisstandarddeviation",
+			"patterns": [
+				"what is the standard deviation",
+				"how to calculate the standard deviation",
+				"how to get standard deviation",
+				"explain the standard deviation",
+				"what is std",
+				"explain std"
+			],
+			"responses": [
+				"The standard deviation measures the spread of data",
+				"Standard Deviation is a measure which shows how much variation (such as spread, dispersion, spread) from the mean exists.  It is a popular measure of variability because it returns to the original units of measure of the data set."
+			]
 		}
 	]
 }
