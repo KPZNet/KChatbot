@@ -60,11 +60,11 @@ def chat():
     sb_model = keras.models.load_model('statbotQAChatModel\\statbotQANNModel')
     sb_rdict, sb_labels, sb_lbl_encoder, sb_responses, sb_training_labels_encoded, sb_num_classes = load_pickles('statbotQAChatModel\\statbotQA')
 
-    #stat_model = keras.models.load_model('statsQAChatModel\\statsQANNModel')
-    #stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('statsQAChatModel\\statsQA')
+    stat_model = keras.models.load_model('statsQAChatModel\\statsQANNModel')
+    stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('statsQAChatModel\\statsQA')
 
-    stat_model = keras.models.load_model('cmoviesChatModel\\cmoviesNNModel')
-    stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('cmoviesChatModel\\cmovies')
+    #stat_model = keras.models.load_model('cmoviesChatModel\\cmoviesNNModel')
+    #stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('cmoviesChatModel\\cmovies')
 
 
     while True:
