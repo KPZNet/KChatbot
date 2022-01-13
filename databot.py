@@ -44,7 +44,7 @@ def getdatafile(sentence):
             res = res[0]
     return res
 
-def vectorize_input_pythonqa(inp):
+def vectorize_sent_inputs(inp):
     p = vectorize_all_sentences( [inp] )
     return p
 
@@ -74,7 +74,7 @@ def chat():
             break
 
         inp_scb = scrub_sentence_min(inp)
-        inp_v = vectorize_input_pythonqa(inp_scb)
+        inp_v = vectorize_sent_inputs(inp_scb)
         result = sb_model.predict(inp_v)
         m = np.argmax(result)
         prob = result[0,m]
