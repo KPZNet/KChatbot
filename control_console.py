@@ -19,7 +19,7 @@ def comp():
     print("  Vectorized Comparison Dot Product: {0:.4f}".format(d))
 
 
-#post_process_statbot_json()
-#build_statbot()
-#start_chat()
+post_process_statbot_json()
+build_statbot()
+start_chat()
 

@@ -53,6 +53,7 @@ dataFile = None
 f1 = None
 fdataset = None
 fileisopen = False
+userName = ''
 
 
 def chat():
