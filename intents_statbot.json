@@ -1,37 +1,81 @@
 {
-	"intents": [
+	"intents" : [
 		{
-			"tag": "greeting",
-			"patterns": [ "Hi", "Hey", "Is anyone there?", "Hello", "Hay" ],
-			"responses": [ "Hello", "Hi", "Hi there" ]
+			"tag" : "howcomparedistributions",
+			"patterns" : [ "how do I compare two distributions" ],
+			"responses" : [
+				"Use a Chi-Square Test",
+				"A Chi-Square Test is most commonly used to compare two or more distributions",
+				"Chi-Square Test is the preferred method in most simple cases"
+			]
 		},
 		{
-			"tag": "goodbye",
-			"patterns": [ "Bye", "See you later", "Goodbye" ],
-			"responses": [ "See you later", "Have a nice day", "Bye!" ]
+			"tag" : "howcomparemeans",
+			"patterns" : [ "how do I compare means" ],
+			"responses" : [
+				"To compare means, use a two sample Student T-Test",
+				"Use a Student-T Test",
+				"Considering a Student-T Test"
+			]
 		},
 		{
-			"tag": "thanks",
-			"patterns": [ "Thanks", "Thank you", "That's helpful", "Thanks for the help" ],
-			"responses": [ "Happy to help!", "Any time!", "My pleasure", "You're most welcome!" ]
+			"tag" : "favoritecolor",
+			"patterns" : [
+				"what is your favorite color",
+				"favorite color please",
+				"tell me what is your favorite color"
+			],
+			"responses" : [
+				"My favorite color is purple",
+				"I like purple",
+				"Purple is my favorite color"
+			]
 		},
 		{
-			"tag": "about",
-			"patterns": [
+			"tag" : "botexpertise",
+			"patterns" : [
+				"what is your expertise",
+				"what is your domain",
+				"what are you good at"
+			],
+			"responses" : [
+				"I have an expertise in statistics and data science",
+				"I am good at data science and statistics",
+				"My main expertise is data analytics and machine learning, happy to help you in any way I can"
+			]
+		},
+		{
+			"tag" : "greeting",
+			"patterns" : [ "Hi", "Hey", "Is anyone there?", "Hello", "Hay" ],
+			"responses" : [ "Hello", "Hi", "Hi there" ]
+		},
+		{
+			"tag" : "goodbye",
+			"patterns" : [ "Bye", "See you later", "Goodbye" ],
+			"responses" : [ "See you later", "Have a nice day", "Bye!" ]
+		},
+		{
+			"tag" : "thanks",
+			"patterns" : [ "Thanks", "Thank you", "That's helpful", "Thanks for the help" ],
+			"responses" : [ "Happy to help!", "Any time!", "My pleasure", "You're most welcome!" ]
+		},
+		{
+			"tag" : "about",
+			"patterns" : [
 				"Who are you?",
 				"What are you?",
 				"Who you are?",
 				"What do you do?",
 				"what can you do?"
 			],
-			"responses": [
+			"responses" : [
 				"I'm KBot your Python Data bot analyst.  I can help analyze data for you... would you like to open a file?",
 				"Hi!  I am the KBot, your personal Python data anayst version 1.0  \r\n\r\nI am here to help analyze data with you"
 			]
 		},
 		{
-			"tag": "name",
-			"patterns": [
+			"tag" : "name",
+			"patterns" : [
 				"what is your name",
 				"what should I call you",
 				"whats your name?",
@@ -39,15 +83,15 @@
 				"My name is, what is your name",
 				"name?"
 			],
-			"responses": [
+			"responses" : [
 				"You can call me the KBot, your persona Analyst",
 				"I'm KBot !!",
 				"Just call me as... KBot"
 			]
 		},
 		{
-			"tag": "help",
-			"patterns": [
+			"tag" : "help",
+			"patterns" : [
 				"Could you help me?",
 				"give me a hand please",
 				"Can you help?",
@@ -56,15 +100,15 @@
 				"I need a help",
 				"support me please"
 			],
-			"responses": [
+			"responses" : [
 				"Tell me how can assist, what can I do",
 				"Tell me your problem..I'm here to help",
 				"Yes, how can I help YOU"
 			]
 		},
 		{
-			"tag": "opendata",
-			"patterns": [
+			"tag" : "opendata",
+			"patterns" : [
 				"I want to open a file",
 				"open data",
 				"I would like to open a data file",
@@ -82,11 +126,11 @@
 				"I would like you to open file",
 				"I would like to open"
 			],
-			"responses": [ "Would you like to open this data file", "OK, I will open this file" ]
+			"responses" : [ "Would you like to open this data file", "OK, I will open this file" ]
 		},
 		{
-			"tag": "mean",
-			"patterns": [
+			"tag" : "mean",
+			"patterns" : [
 				"can you plot the mean",
 				"what is the mean plot",
 				"mean",
@@ -99,28 +143,22 @@
 				"show the mean plot",
 				"can you show the mean plot"
 			],
-			"responses": [
-				"Here is the mean",
-				"The mean is"
-			]
+			"responses" : [ "Here is the mean", "The mean is" ]
 		},
 		{
-			"tag": "histogram",
-			"patterns": [
+			"tag" : "histogram",
+			"patterns" : [
 				"can you plot histogram",
 				"what is the histogram",
 				"histogram",
 				"please get histogram",
 				"calculate histogram"
 			],
-			"responses": [
-				"Here is the histogram plot",
-				"The histogram plot is"
-			]
+			"responses" : [ "Here is the histogram plot", "The histogram plot is" ]
 		},
 		{
-			"tag": "plot",
-			"patterns": [
+			"tag" : "plot",
+			"patterns" : [
 				"can you plot data",
 				"what is the plot",
 				"plot",
@@ -128,14 +166,14 @@
 				"calculate plot",
 				"show plot"
 			],
-			"responses": [
+			"responses" : [
 				"Here is a series plot, just shows all the numerical data graphically",
 				"The series plot shows all the numeric data"
 			]
 		},
 		{
-			"tag": "standarddeviation",
-			"patterns": [
+			"tag" : "standarddeviation",
+			"patterns" : [
 				"can you show standard deviation",
 				"what is the standard deviation",
 				"standard deviation",
@@ -147,39 +185,36 @@
 				"standard deviation please",
 				"sd"
 			],
-			"responses": [
-				"Here is the standard deviation",
-				"The STDV is"
-			]
+			"responses" : [ "Here is the standard deviation", "The STDV is" ]
 		},
 		{
-			"tag": "complaint",
-			"patterns": [
+			"tag" : "complaint",
+			"patterns" : [
 				"have a complaint",
 				"I want to raise a complaint",
 				"there is a complaint about a service"
 			],
-			"responses": [
+			"responses" : [
 				"What is your problem now?",
 				"Look, everything you do wrong isn't my fault"
 			]
 		},
 		{
-			"tag": "whatismean",
-			"patterns": [
+			"tag" : "whatismean",
+			"patterns" : [
 				"what is the mean",
 				"how to calculate the mean",
 				"how to get mean",
 				"explain the mean"
 			],
-			"responses": [
+			"responses" : [
 				"The mean is the average or sum of data divided by total",
 				"The mean is the sum divided by total"
 			]
 		},
 		{
-			"tag": "whatisstandarddeviation",
-			"patterns": [
+			"tag" : "whatisstandarddeviation",
+			"patterns" : [
 				"what is the standard deviation",
 				"how to calculate the standard deviation",
 				"how to get standard deviation",
@@ -187,7 +222,7 @@
 				"what is std",
 				"explain std"
 			],
-			"responses": [
+			"responses" : [
 				"The standard deviation measures the spread of data",
 				"Standard Deviation is a measure which shows how much variation (such as spread, dispersion, spread) from the mean exists.  It is a popular measure of variability because it returns to the original units of measure of the data set."
 			]

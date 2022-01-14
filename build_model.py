@@ -11,9 +11,6 @@ import pandas as pd
 
 from statbot_lib import *
 
-from databot import start_chat
-
-
 def __readin_intensions(tfile):
     with open(tfile) as file:
         data = json.load(file)
@@ -58,6 +55,7 @@ def load_vectorized_sentences(model_name):
 
 
 def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectorized_sentences):
+    print(training_labels_encoded.shape)
     epochs = epochs
     max_len = vectorized_sentences.shape[1]
     model = Sequential()
@@ -69,7 +67,7 @@ def build_vectorized_model(epochs,num_classes, training_labels_encoded, vectoriz
     
     model.summary()
 
-    history = model.fit(vectorized_sentences, np.array(training_labels_encoded), epochs=epochs, verbose=1)
+    history = model.fit(vectorized_sentences, np.array(training_labels_encoded), epochs=epochs, verbose=2)
 
     return epochs, history, model
 
@@ -105,7 +103,6 @@ def build_modeler(model_name, epochs):
     save_model_to_file(model, model_name+'NNModel')
     return vectorized_sentences
 
-
 def build_trainer(intents_file, model_name, vectorize = False):
     rdict, intent, labels, num_classes, responses, training_labels,training_sentences,lbl_encoder, training_labels_encoded = build_trainingdata(intents_file)
     pickle_trainingdata(model_name,rdict, labels, lbl_encoder, responses, training_labels_encoded, num_classes)
@@ -131,7 +128,7 @@ def build_statbot():
 
 def build_statexchange():
     model_name = 'statsQA'
-    build_modeler(model_name, 50)
+    build_modeler(model_name, 100)
     print("Built!")
 
 def build_cmovies():

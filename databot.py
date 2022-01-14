@@ -53,7 +53,7 @@ dataFile = None
 f1 = None
 fdataset = None
 fileisopen = False
-userName = ''
+debugOn = False
 
 
 def chat():
@@ -63,9 +63,6 @@ def chat():
 
     stat_model = keras.models.load_model('statsQANNModel')
     stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('statsQA')
-
-    #stat_model = keras.models.load_model('cmoviesChatModel\\cmoviesNNModel')
-    #stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('cmoviesChatModel\\cmovies')
 
 
     while True:
@@ -89,10 +86,11 @@ def chat():
             if len(c) == 0:
                 print("I'm sorry, I don't understand, say that again please?")
             else:
-                print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
-                print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
-                print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
-                print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
+                if debugOn:
+                    print(Fore.LIGHTMAGENTA_EX + "\tScrubbed:" + Style.RESET_ALL , inp_scb)
+                    print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
+                    print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
+                    print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
                 print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
 
 
@@ -115,25 +113,25 @@ def chat():
                         print("Could NOT open file, not sure why, here was exception {0}".format(e))
                 else:
                     print("...but please let me know the file name, say it again?")
-            if tag == 'mean':
+            if tag == 'mean' and fileisopen == True:
                 if fileisopen:
                     fdataset.plot.box(title="Box and whisker plot", grid=True)
                     plot.show()
-            if tag == 'histogram':
+            if tag == 'histogram' and fileisopen == True:
                 if fileisopen:
                     fdataset.plot.hist(title="Histogram plot", grid=True)
                     plot.show()
-            if tag == 'plot':
+            if tag == 'plot' and fileisopen == True:
                 if fileisopen:
                     fdataset.plot(title="Data plot", grid=True)
                     plot.show()
-            if tag == 'standarddeviation':
+            if tag == 'standarddeviation' and fileisopen:
                 if fileisopen:
                     print( fdataset.std() )
 
         else:
-            print("I searched Stats Exchange to find an answer for you, and here is what I found...")
-            print('')
+            #print("I searched Stats Exchange to find an answer for you, and here is what I found...\n")
+            #print('')
             result2 = stat_model.predict(inp_v)
             m2 = np.argmax(result2)
             prob2 = result2[0,m2]
@@ -143,10 +141,11 @@ def chat():
             rd2 = stat_rdict[t2]
             c2 = rd2.responses
             patterns2 = rd2.patterns
-            print(Fore.LIGHTMAGENTA_EX + "\t\tScrubbed:" + Style.RESET_ALL , inp_scb)
-            print(Fore.LIGHTMAGENTA_EX + "\t\tTAG:" + Style.RESET_ALL , t2)
-            print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
-            print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
+            if debugOn:
+                print(Fore.LIGHTMAGENTA_EX + "\t\tScrubbed:" + Style.RESET_ALL , inp_scb)
+                print(Fore.LIGHTMAGENTA_EX + "\t\tTAG:" + Style.RESET_ALL , t2)
+                print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
+                print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
             print(Fore.GREEN + "\t\tChatBot:" + Style.RESET_ALL , np.random.choice(c2))
                                     
 def start_chat():

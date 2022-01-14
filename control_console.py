@@ -1,4 +1,4 @@
-from data_preprocessing import post_process_statbot_json
+from data_preprocessing import *
 from build_model import *
 from databot import start_chat
 
@@ -18,9 +18,10 @@ def comp():
     print('  Sentence 2 : \"{0}\"'.format(s2) )
     print("  Vectorized Comparison Dot Product: {0:.4f}".format(d))
 
-build_statexchange()
+#preprocess_statexchangebot_csvs()
+#build_statexchange()
 
 #post_process_statbot_json()
 #build_statbot()
-#start_chat()
+start_chat()
 
