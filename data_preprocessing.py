@@ -312,10 +312,6 @@ def post_process_cmovies_json():
     print("Done processing CMOVIES JSON")
 
 
-if __name__ == "__main__":
-    #post_process_statbot_json()
-    #preprocess_statexchangebot_csvs()
-    post_process_cmovies_json()
 
 
 

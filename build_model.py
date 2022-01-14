@@ -129,6 +129,11 @@ def build_statbot():
     deploy_model(model_name)
     print("Built!")
 
+def build_statexchange():
+    model_name = 'statsQA'
+    build_modeler(model_name, 50)
+    print("Built!")
+
 def build_cmovies():
     model_name = 'cmovies'
     build_trainer('cmovies_mready.json', model_name, vectorize=True)
@@ -136,7 +141,6 @@ def build_cmovies():
     deploy_model(model_name)
     print("Built!")
 
-if __name__ == "__main__":
-    build_cmovies()
+  
 
 

@@ -18,8 +18,9 @@ def comp():
     print('  Sentence 2 : \"{0}\"'.format(s2) )
     print("  Vectorized Comparison Dot Product: {0:.4f}".format(d))
 
+build_statexchange()
 
-post_process_statbot_json()
-build_statbot()
-start_chat()
+#post_process_statbot_json()
+#build_statbot()
+#start_chat()
 
