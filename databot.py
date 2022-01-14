@@ -19,6 +19,11 @@ from nltk.tokenize import word_tokenize
 from data_preprocessing import scrub_sentence_min
 
 from statbot_lib import *
+import click
+
+def clrscr():
+   # Clear screen using click.clear() function
+    click.clear()
 
 def findwordmatch(tsentence, baseword):
     p = -10.0
@@ -112,34 +117,36 @@ def chat():
                         print("Could NOT open file, not sure why, here was exception {0}".format(e))
                 else:
                     print("...but please let me know the file name, say it again?")
-            if tag == 'mean' and fileisopen == True:
+            elif tag == 'mean':
+                if fileisopen:
                     print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot.box(title="Box and whisker plot", grid=True)
                     plot.show()
-            else:
-                print("I am not able to plot the mean, please open a data file")
-                continue
-            if tag == 'histogram' and fileisopen == True:
+                else:
+                    print("Please open a data file first")
+            elif tag == 'histogram' :
+                if fileisopen:
                     print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot.hist(title="Histogram plot", grid=True)
                     plot.show()
-            else:
-                print("I am not able to show a histogram, please open a data file")
-                continue
-            if tag == 'plot' and fileisopen == True:
+                else:
+                    print("Please open a data file first")
+            elif tag == 'plot' :
+                if fileisopen:
                     print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot(title="Data plot", grid=True)
                     plot.show()
-            else:
-                print("I am not able to show a plot, please open a data file")
-                continue
-            if tag == 'standarddeviation' and fileisopen:
+                else:
+                    print("Please open a data file first")
+            elif tag == 'standarddeviation' :
+                if fileisopen:
                     print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     print( fdataset.std() )
-            else:
-                print("I am not able to show standard deviation, please open a data file")
-                continue
-            print(Fore.GREEN + "" + Style.RESET_ALL , np.random.choice(c2))
+                else:
+                    print("Please open a data file first")
+            else:           
+                print(Fore.GREEN + "" + Style.RESET_ALL , np.random.choice(c))
+
         else:
             result2 = stat_model.predict(inp_v)
             m2 = np.argmax(result2)
