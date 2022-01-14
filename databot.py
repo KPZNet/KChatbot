@@ -48,12 +48,7 @@ def vectorize_sent_inputs(inp):
     p = vectorize_all_sentences( [inp] )
     return p
 
-lastChat = ''
-dataFile = None
-f1 = None
-fdataset = None
-fileisopen = False
-debugOn = False
+
 
 
 def chat():
@@ -64,6 +59,12 @@ def chat():
     stat_model = keras.models.load_model('statsQANNModel')
     stat_rdict, stat_labels, stat_lbl_encoder, stat_responses, stat_training_labels_encoded, stat_num_classes = load_pickles('statsQA')
 
+    lastChat = ''
+    dataFile = None
+    f1 = None
+    fdataset = None
+    fileisopen = False
+    debugOn = False
 
     while True:
         print(Fore.LIGHTBLUE_EX + "User: " + Style.RESET_ALL, end="")
@@ -91,18 +92,16 @@ def chat():
                     print(Fore.LIGHTMAGENTA_EX + "\tTAG:" + Style.RESET_ALL , t)
                     print(Fore.LIGHTMAGENTA_EX + "\tNN Likelyhood:" + Style.RESET_ALL , prob)
                     print(Fore.LIGHTMAGENTA_EX + "\tMatched:" + Style.RESET_ALL , patterns[0])
-                print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
-
-
+                
             if tag == 'opendata':
                 bm = getdatafile(inp)
 
                 if (bm is not None) and (len(bm) > 0) :
-                    print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
+                    #print('DATAFILE open request: MATCH [[{0}]]'.format(bm))
                     try:
                         fdataset = pd.read_csv(bm)
-                        print("I opened the file {0} for you".format(bm))
-                        print("Here is quick summary and view of the data\n\n")
+                        print("I opened file {0} for you".format(bm))
+                        print("Here is quick summary of data\n\n")
                         print('---------------')
                         print(fdataset.head())
                         print('---------------')
@@ -114,39 +113,54 @@ def chat():
                 else:
                     print("...but please let me know the file name, say it again?")
             if tag == 'mean' and fileisopen == True:
-                if fileisopen:
+                    print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot.box(title="Box and whisker plot", grid=True)
                     plot.show()
+            else:
+                print("I am not able to plot the mean, please open a data file")
+                continue
             if tag == 'histogram' and fileisopen == True:
-                if fileisopen:
+                    print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot.hist(title="Histogram plot", grid=True)
                     plot.show()
+            else:
+                print("I am not able to show a histogram, please open a data file")
+                continue
             if tag == 'plot' and fileisopen == True:
-                if fileisopen:
+                    print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     fdataset.plot(title="Data plot", grid=True)
                     plot.show()
+            else:
+                print("I am not able to show a plot, please open a data file")
+                continue
             if tag == 'standarddeviation' and fileisopen:
-                if fileisopen:
+                    print(Fore.GREEN + "ChatBot:" + Style.RESET_ALL , np.random.choice(c))
                     print( fdataset.std() )
-
+            else:
+                print("I am not able to show standard deviation, please open a data file")
+                continue
+            print(Fore.GREEN + "" + Style.RESET_ALL , np.random.choice(c2))
         else:
-            #print("I searched Stats Exchange to find an answer for you, and here is what I found...\n")
-            #print('')
             result2 = stat_model.predict(inp_v)
             m2 = np.argmax(result2)
             prob2 = result2[0,m2]
-            tag2 = stat_lbl_encoder.inverse_transform([np.argmax(result2)])
+            if prob >= 0.75:
+                tag2 = stat_lbl_encoder.inverse_transform([np.argmax(result2)])
 
-            t2 = tag2[0]
-            rd2 = stat_rdict[t2]
-            c2 = rd2.responses
-            patterns2 = rd2.patterns
-            if debugOn:
-                print(Fore.LIGHTMAGENTA_EX + "\t\tScrubbed:" + Style.RESET_ALL , inp_scb)
-                print(Fore.LIGHTMAGENTA_EX + "\t\tTAG:" + Style.RESET_ALL , t2)
-                print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
-                print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
-            print(Fore.GREEN + "\t\tChatBot:" + Style.RESET_ALL , np.random.choice(c2))
+                t2 = tag2[0]
+                rd2 = stat_rdict[t2]
+                c2 = rd2.responses
+                patterns2 = rd2.patterns
+                if debugOn:
+                    print(Fore.LIGHTMAGENTA_EX + "\t\tScrubbed:" + Style.RESET_ALL , inp_scb)
+                    print(Fore.LIGHTMAGENTA_EX + "\t\tTAG:" + Style.RESET_ALL , t2)
+                    print(Fore.LIGHTMAGENTA_EX + "\t\tNN Likelyhood:" + Style.RESET_ALL , prob2)
+                    print(Fore.LIGHTMAGENTA_EX + "\t\tMatched:" + Style.RESET_ALL , patterns2[0])
+                
+                print("I talked to Stat Exchange and here is what they say...\n")
+                print(Fore.GREEN + "" + Style.RESET_ALL , np.random.choice(c2))
+            else:
+                print("I don't understand your question, can you try again please")
                                     
 def start_chat():
     print(Fore.YELLOW + "Welcome to KBot data Analyst!" + Style.RESET_ALL)

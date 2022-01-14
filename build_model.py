@@ -123,7 +123,7 @@ def build_statbot():
     model_name = 'statbotQA'
     build_trainer('intents_statbot_mready.json', model_name, vectorize=True)
     build_modeler(model_name, 50)
-    deploy_model(model_name)
+    #deploy_model(model_name)
     print("Built!")
 
 def build_statexchange():
@@ -135,7 +135,7 @@ def build_cmovies():
     model_name = 'cmovies'
     build_trainer('cmovies_mready.json', model_name, vectorize=True)
     build_modeler(model_name, 50)
-    deploy_model(model_name)
+    #deploy_model(model_name)
     print("Built!")
 
   

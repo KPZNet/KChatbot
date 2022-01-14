@@ -304,7 +304,7 @@ def preprocess_statexchangebot_csvs():
     print("Done building clean JSON")
 
 def post_process_statbot_json():
-    scrub_jsonfile('intents_statbot.json', 10)
+    scrub_jsonfile('intents_statbot.json', 3)
     print("Done processing statbot JSON")
 
 def post_process_cmovies_json():
